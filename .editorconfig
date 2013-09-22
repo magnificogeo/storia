@@ -1,0 +1,19 @@
+; http://EditorConfig.org
+
+; The master file is start-here/editor-config.  Do not edit any other file.
+; start-here/update.py ensures the file is present in every repository and
+; keeps it up to date
+
+; Update your editor with a plugin to ensure the file is used
+; http://editorconfig.org/#download
+
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
