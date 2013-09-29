@@ -16,8 +16,8 @@ if app.debug:
     toolbar = DebugToolbarExtension(app)
 
 @app.route('/')
-def hello_world():
-    return flask.render_template("hello.html", name="you")
+def index():
+    return flask.render_template("index.html")
 
 if __name__ == '__main__':
     app.run()
