@@ -1,45 +1,84 @@
 <head>
 	<title> Storia . Your pictures, your stories. </title>
 	<!-- stylesheets -->
-	<link href="css/style.css" rel="stylesheet">
-	<link href="css/jquery.bxslider.css" rel="stylesheet">
+	<link href="static/css/style.css" rel="stylesheet">
+	<link href="static/css/jquery.bxslider.css" rel="stylesheet">
 
 	<!-- favicon -->
-	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="shortcut icon" href="static/img/favicon.ico">
 </head>
 
 <body>
 	<div class="navbar-wrapper">
 		<div class="navbar-logo">
-			<img src="images/storia.png"><span class="navbar-brandname">Storia</span>
+			<img src="static/img/storia.png"><span class="navbar-brandname">Storia</span>
+			<div class="navbar-login">
+				<div class="navbar-login-name">George Moh</div>
+			</div>
+			<img class="navbar-login-settings-icon" src="static/img/settings-gear.png">
+			<!-- User Settings and Navigation -->
+			<div class="navbar-search">
+				<img src="static/img/search-magnifier.png"><input type="text" value="Search...">
+			</div>
 		</div>
+		<div class="navbar-login-settings" style="display:none;height:0px">
+			<ul>
+				<li><a href="#">Account Settings</a></li>	
+				<li><a href="#">Log out</a></li>
+			</ul>
+		</div>
+
 	</div>
 
+	<!--
 	<div class="main-slider-wrapper">
 		<ul class="main-slider">
-			<li><img src="http://unslider.com/img/sunset.jpg" /> photostories here </li>
-			<li><img src="http://unslider.com/img/wood.jpg" /> photostories here</li>
-			<li><img src="http://unslider.com/img/subway.jpg" /> photostories here </li>
-			<li><img src="http://unslider.com/img/shop.jpg" /> photostories here</li>
+			<li><img src="http://unslider.com/img/sunset.jpg" height="500"/></li>
+			<li><img src="http://unslider.com/img/wood.jpg" height="500"/> </li>
+			<li><img src="http://unslider.com/img/subway.jpg" height="500"/> </li>
+			<li><img src="http://unslider.com/img/shop.jpg" height="500"/> </li>
 		</ul>
-	</div>
+	</div> -->
 
 	<!-- main content wrapper follows 960px grid design -->
-	<div class="main-content-wrapper">
+	<div class="main-content-wrapper cf">
+
+		<div class="main-content-row cf">
+			<ul>
+				<li>a</li>
+			</ul>
+			<ul>
+				<li>b</li>
+			<ul>
 
 
-
-
+			
+		</div>
 
 	<div>
 
 
 	<!-- load javascripts here -->
 	<script src="//code.jquery.com/jquery-latest.min.js"></script>
-	<script src="js/jquery.bxslider.js"></script>
+	<script src="static/js/jquery.bxslider.js"></script>
 	<script>	
 		$(document).ready(function(){
-		  $('.main-slider').bxSlider();
+		  $('.main-slider').bxSlider({
+		  	auto: true,
+		  	pager: false,
+		  	captions: true
+		  });
+		});
+	</script>
+
+	<script>
+		$(document).ready(function() {
+			$('.navbar-login-settings-icon').on("mouseenter", function() {
+				$('.navbar-login-settings').animate({height:"100%"},200).show();
+			});
+			$('.navbar-login-settings-icon').on("click", function() {
+				$('.navbar-login-settings').animate({height:"0%"},200).hide();
+			});
 		});
 	</script>
 </body>
