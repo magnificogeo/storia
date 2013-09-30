@@ -30,30 +30,67 @@
 
 	</div>
 
-	<!--
-	<div class="main-slider-wrapper">
-		<ul class="main-slider">
-			<li><img src="http://unslider.com/img/sunset.jpg" height="500"/></li>
-			<li><img src="http://unslider.com/img/wood.jpg" height="500"/> </li>
-			<li><img src="http://unslider.com/img/subway.jpg" height="500"/> </li>
-			<li><img src="http://unslider.com/img/shop.jpg" height="500"/> </li>
-		</ul>
-	</div> -->
-
 	<!-- main content wrapper follows 960px grid design -->
-	<div class="main-content-wrapper cf">
+	<div class="main-content-wrapper">
 
-		<div class="main-content-row cf">
-			<ul>
-				<li>a</li>
-			</ul>
-			<ul>
-				<li>b</li>
-			<ul>
-
-
+		<div class="slider-block-wrapper">
 			
-		</div>
+			<ul class="slider-wrapper">
+				<li>
+					<ul class="main-slider">
+						<li><img src="http://distilleryimage8.ak.instagram.com/e69257ca288411e3bb8a22000a1f97fc_7.jpg" title="Caption"/></li>
+						<li><img src="http://distilleryimage6.ak.instagram.com/19358c2c288211e39ce222000a1fd1f4_7.jpg" title="Caption"/> </li>
+						<li><img src="http://distilleryimage8.ak.instagram.com/249a107a293f11e3a8b522000a9f3cba_7.jpg" title="Caption"/> </li>
+						<li><img src="http://distilleryimage10.s3.amazonaws.com/2fd103cc288611e3812422000aeb0bcd_7.jpg" title="Caption"/> </li>
+					</ul>
+				</li>
+			
+
+				<li>
+					<ul class="main-slider-2">
+						<li><img src="http://distilleryimage11.ak.instagram.com/4c96a778291711e39d1722000aaa07c6_8.jpg"/></li>
+						<li><img src="http://distilleryimage1.ak.instagram.com/5da08bc2295f11e3bf3622000a9f1886_7.jpg"/> </li>
+						<li><img src="http://distilleryimage8.ak.instagram.com/f47d6178292811e3b12d22000a9e295b_7.jpg"/> </li>
+						<li><img src="http://distilleryimage3.ak.instagram.com/d7cb3fe8292b11e3bdf822000a1fa51c_8.jpg"/> </li>
+					</ul>
+				</li>
+
+				<li>
+					<ul class="main-slider-3">
+						<li><img src="http://distilleryimage11.ak.instagram.com/4c96a778291711e39d1722000aaa07c6_8.jpg"/></li>
+						<li><img src="http://distilleryimage1.ak.instagram.com/5da08bc2295f11e3bf3622000a9f1886_7.jpg"/> </li>
+						<li><img src="http://distilleryimage8.ak.instagram.com/f47d6178292811e3b12d22000a9e295b_7.jpg"/> </li>
+						<li><img src="http://distilleryimage3.ak.instagram.com/d7cb3fe8292b11e3bdf822000a1fa51c_8.jpg"/> </li>
+					</ul>
+				</li>
+
+				<li>
+					<ul class="main-slider-4">
+						<li><img src="http://distilleryimage11.ak.instagram.com/4c96a778291711e39d1722000aaa07c6_8.jpg"/></li>
+						<li><img src="http://distilleryimage1.ak.instagram.com/5da08bc2295f11e3bf3622000a9f1886_7.jpg"/> </li>
+						<li><img src="http://distilleryimage8.ak.instagram.com/f47d6178292811e3b12d22000a9e295b_7.jpg"/> </li>
+						<li><img src="http://distilleryimage3.ak.instagram.com/d7cb3fe8292b11e3bdf822000a1fa51c_8.jpg"/> </li>
+					</ul>
+				</li>
+			
+				<li>
+					<ul class="main-slider-5">
+						<li><img src="http://distilleryimage11.ak.instagram.com/4c96a778291711e39d1722000aaa07c6_8.jpg"/></li>
+						<li><img src="http://distilleryimage1.ak.instagram.com/5da08bc2295f11e3bf3622000a9f1886_7.jpg"/> </li>
+						<li><img src="http://distilleryimage8.ak.instagram.com/f47d6178292811e3b12d22000a9e295b_7.jpg"/> </li>
+						<li><img src="http://distilleryimage3.ak.instagram.com/d7cb3fe8292b11e3bdf822000a1fa51c_8.jpg"/> </li>
+					</ul>
+				</li>
+
+				<li>
+					<ul class="main-slider-6">
+						<li><img src="http://distilleryimage11.ak.instagram.com/4c96a778291711e39d1722000aaa07c6_8.jpg"/></li>
+						<li><img src="http://distilleryimage1.ak.instagram.com/5da08bc2295f11e3bf3622000a9f1886_7.jpg"/> </li>
+						<li><img src="http://distilleryimage8.ak.instagram.com/f47d6178292811e3b12d22000a9e295b_7.jpg"/> </li>
+						<li><img src="http://distilleryimage3.ak.instagram.com/d7cb3fe8292b11e3bdf822000a1fa51c_8.jpg"/> </li>
+					</ul>
+				</li>
+		</ul>
 
 	<div>
 
@@ -63,10 +100,14 @@
 	<script src="static/js/jquery.bxslider.js"></script>
 	<script>	
 		$(document).ready(function(){
-		  $('.main-slider').bxSlider({
+		  $('[class^=main-slider]').bxSlider({
 		  	auto: true,
 		  	pager: false,
-		  	captions: true
+		  	captions: true,
+		  	slideWidth: 200,
+		  	minSlides: 1,
+		  	maxSlides: 1,
+		  	adaptiveHeight:true
 		  });
 		});
 	</script>

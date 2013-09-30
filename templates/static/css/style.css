@@ -82,7 +82,7 @@ table {
 
 body {
 	background-color:#F6F6F6;
-	/*background-image:url('../img/storia-bg.png');*/
+	background-image:url('../img/storia-bg.png');
 	background-attachment: fixed;
 	background-position: 50% 0%;
 	background-repeat: no-repeat no-repeat;
@@ -123,13 +123,6 @@ body {
 	padding-left:5px;
 	top:10px;
 	vertical-align:top;
-}
-
-.main-slider-wrapper {
-	position:relative;
-	top:50px;
-	text-align:center;
-	border-bottom: 4px solid #cccccc;
 }
 
 .main-content-wrapper {
@@ -237,21 +230,14 @@ a:hover {
 	opacity:0.94;
 }
 
-.main-content-row {
-	display:block;
-	height:100%;
+.slider-block-wrapper {
+	padding:60px 3px 0px 3px;
+	text-align:center;
+
 }
 
-.main-content-row ul {
-	position:relative;
-	display:inline-block; 
-	background-color:black;
-	width:80%;
-	height:380px;
-	margin-top:80px;
-	margin-left:10px;
-	margin-right:10px;
-	margin-bottom:10px;
+.slider-block-wrapper ul li {
+	display:inline-block;
+	margin-bottom:20px;
 }
-
 
