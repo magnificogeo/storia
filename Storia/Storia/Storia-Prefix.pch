@@ -1,0 +1,35 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#endif
+
+#ifdef DEBUG
+#define DLog(__FORMAT__, ...) NSLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
+#else
+#define DLog(...) do {} while (0)
+#define ALog(__FORMAT__, ...) NSLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#endif
+
+
+#define BASE_URL @"http://10.69.7.56:2402"
+#define USER_ID_KEY @"userIdKey"
+#define API_TOKEN_KEY @"apiTokenKey"
+
+
+#define S3_ACCESS_KEY @"AKIAIN5LMTNXXHYSS55Q"
+#define S3_SECRET_KEY @"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"
+
+#define S3_BUCKET_NAME @"storia"

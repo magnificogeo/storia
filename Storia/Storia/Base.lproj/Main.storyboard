@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dKG-qR-SRN">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+    </dependencies>
+    <scenes>
+        <!--Storia Story View Controller - San Francisco-->
+        <scene sceneID="STE-3p-aas">
+            <objects>
+                <viewController id="3io-5V-OKL" customClass="StoriaStoryViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aGd-c5-0p2"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ao7-lx-Wxl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EeT-Yp-SKs">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="San Francisco" id="3Cf-gJ-KvJ">
+                        <barButtonItem key="backBarButtonItem" title="Discoveries" id="V2F-yc-s4Z"/>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kG9-Nu-8ax" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1581" y="-97"/>
+        </scene>
+        <!--Storia Feeds View Controller - Discoveries-->
+        <scene sceneID="M69-B4-9hH">
+            <objects>
+                <viewController id="VU8-T2-jPa" customClass="StoriaFeedsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="w5Z-se-NbZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="MYA-tH-j89"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="z7D-si-wVP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Discoveries" id="CDB-s3-TGG"/>
+                    <connections>
+                        <segue destination="3io-5V-OKL" kind="push" identifier="toStoryViewController" id="cAy-1e-HO8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QN9-vs-fnT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1159" y="-97"/>
+        </scene>
+        <!--Storia Auth View Controller-->
+        <scene sceneID="LAP-MY-xmo">
+            <objects>
+                <viewController id="dKG-qR-SRN" customClass="StoriaAuthViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2tm-Dc-Wcd"/>
+                        <viewControllerLayoutGuide type="bottom" id="NRO-hC-bVC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="MY3-NK-8qz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1K6-xH-QNZ">
+                                <rect key="frame" x="40" y="105" width="240" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CqC-Wp-xVU">
+                                <rect key="frame" x="40" y="158" width="240" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XyJ-f5-WUk">
+                                <rect key="frame" x="137" y="198" width="51" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="LOG IN">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginPressed:" destination="dKG-qR-SRN" eventType="touchUpInside" id="rV0-s4-BDO"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome to Storia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="suq-0p-MdZ">
+                                <rect key="frame" x="90" y="36" width="141" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="passwordTextField" destination="CqC-Wp-xVU" id="lfp-ZJ-0oo"/>
+                        <outlet property="usernameTextField" destination="1K6-xH-QNZ" id="4X0-VS-Iy8"/>
+                        <segue destination="8YX-ce-x5E" kind="modal" identifier="goToTabBarController" id="48j-BA-n5f"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fHD-o0-O6Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="78" y="936"/>
+        </scene>
+        <!--Storia Profile View Controller - Profile-->
+        <scene sceneID="PBD-28-4DT">
+            <objects>
+                <viewController id="pQE-ht-AFP" customClass="StoriaProfileViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="12q-X3-sY9"/>
+                        <viewControllerLayoutGuide type="bottom" id="jsY-JL-IX3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="73S-ot-Jrb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Your Stories" id="hnW-td-ydk"/>
+                    <navigationItem key="navigationItem" title="Profile" id="4bq-Yu-nos">
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="lcW-Sm-kfC">
+                            <connections>
+                                <action selector="createStoryButtonClicked:" destination="pQE-ht-AFP" id="g8t-5a-D8j"/>
+                                <segue destination="Kzm-bv-MU0" kind="push" id="K7r-R0-hxZ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="3io-5V-OKL" kind="push" identifier="profileToStory" id="LfN-5m-xbE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="82Y-F0-Crj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1167" y="628"/>
+        </scene>
+        <!--Storia Story Creation View Controller - Create your story-->
+        <scene sceneID="WUI-GA-69z">
+            <objects>
+                <viewController id="Kzm-bv-MU0" customClass="StoriaStoryCreationViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cUI-U5-Ohg"/>
+                        <viewControllerLayoutGuide type="bottom" id="SQT-7D-ULH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="R5E-cj-Cva">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LWO-UK-wCn">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="of6-2P-yQf">
+                                <rect key="frame" x="20" y="69" width="130" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <state key="normal" title="Take From Camera">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="takeFromCameraPressed:" destination="Kzm-bv-MU0" eventType="touchUpInside" id="nUX-pB-Srl"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n41-Gt-Jav">
+                                <rect key="frame" x="176" y="69" width="124" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <state key="normal" title="Take From Photos">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="takeFromPhotosPressed:" destination="Kzm-bv-MU0" eventType="touchUpInside" id="k0Q-Ru-NOx"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Create your story" id="98e-20-xkf">
+                        <barButtonItem key="backBarButtonItem" title="Profile" id="mQs-bp-hX6"/>
+                        <barButtonItem key="rightBarButtonItem" title="Publish" id="AEm-q0-2BS">
+                            <connections>
+                                <action selector="publishButtonPressed:" destination="Kzm-bv-MU0" id="Gwj-xl-voU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mainScrollView" destination="LWO-UK-wCn" id="IC7-Yq-niw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Juc-ry-zJT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1573" y="628"/>
+        </scene>
+        <!--Navigation Controller - Your Stories-->
+        <scene sceneID="CYW-8a-RnJ">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="qFH-dn-yUb" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Your Stories" image="second" id="5MW-aC-Lk5"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="GpH-Zp-WMB">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="pQE-ht-AFP" kind="relationship" relationship="rootViewController" id="1bJ-ct-e9b"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="082-qU-RaT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="749" y="628"/>
+        </scene>
+        <!--Navigation Controller - Discoveries-->
+        <scene sceneID="yWb-WT-gt9">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="4fy-yO-VIh" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Discoveries" image="first" id="ZUY-Gf-u6M"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Own-Ek-gnl">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="VU8-T2-jPa" kind="relationship" relationship="rootViewController" id="Xzg-sn-KG8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9GO-xW-ytK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="735" y="-97"/>
+        </scene>
+        <!--Storia Tab Bar Controller-->
+        <scene sceneID="Vex-rW-GRa">
+            <objects>
+                <tabBarController storyboardIdentifier="storiaTabBar" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8YX-ce-x5E" customClass="StoriaTabBarController" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="JQR-rB-NYL">
+                        <rect key="frame" x="0.0" y="431" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="4fy-yO-VIh" kind="relationship" relationship="viewControllers" id="kcf-6i-ZJL"/>
+                        <segue destination="qFH-dn-yUb" kind="relationship" relationship="viewControllers" id="vWR-On-Nxg"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FNP-y4-bzi" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="180"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="first" width="30" height="30"/>
+        <image name="second" width="30" height="30"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="LfN-5m-xbE"/>
+    </inferredMetricsTieBreakers>
+</document>
