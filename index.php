@@ -35,6 +35,8 @@ $app->get(
     '/',
     function () {
 
+        echo "CHEEBEH!";
+
 });
 
 // POST route
