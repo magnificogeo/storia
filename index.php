@@ -10,42 +10,70 @@
 require 'Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
+require( 'lib/mongodb.php' );
+require( 'lib/tokengenerator.php' );
 
-/**
- * Step 2: Instantiate a Slim application
- *
- * This example instantiates a Slim application using
- * its default settings. However, you will usually configure
- * your Slim application now by passing an associative array
- * of setting names and values into the application constructor.
- */
+$collection_object = array(
+    'user' => $user_collection,
+    'stories' => $stories_collection
+    );
+
 $app = new \Slim\Slim();
 
-/**
- * Step 3: Define the Slim application routes
- *
- * Here we define several Slim application routes that respond
- * to appropriate HTTP request methods. In this example, the second
- * argument for `Slim::get`, `Slim::post`, `Slim::put`, `Slim::patch`, and `Slim::delete`
- * is an anonymous function.
- */
-
-// GET route
+/* POST ROUTES HERE */
 $app->get(
-    '/',
+    '/api/login',
     function () {
 
-        echo "CHEEBEH!";
+       
 
 });
+/* END OF POST ROUTES */
 
-// POST route
+
+/* POST ROUTES HERE */
 $app->post(
-    '/post',
-    function () {
-        echo 'This is a POST route';
+    '/api/login',
+    function () use ( $app, $user_collection ) {
+        
+        // @TODO: write form validation using inbuilt php functions
+        $user_name = $_POST['user_name'];
+        $password = $_POST['password'];
+        
+        // Check with MongoDB database here
+        $login_query = $user_collection->findOne( array( 
+            'user_name' => $user_name,
+            'user_password' => $password
+            ) );
+
+        // If user is in the database
+        if ( $login_query ) {
+
+            $response = array(
+                "status" => "ok",
+                "token" => generate_token() // Need to generate token here @TODO: Write a token generator function
+                );
+
+            // Return JSON response
+            echo json_encode( $response );
+
+        } else {
+
+            // Return JSON response
+            $response = array(
+                "status" => "error",
+                "message" => "Your user/password combination is incorrect" // Need to generate token here @TODO: Write a token generator function
+                );
+
+            echo json_encode( $response );
+
+            $app->response->setStatus(400);
+
+        }
     }
 );
+
+/* END OF POST ROUTES */
 
 // PUT route
 $app->put(
@@ -68,10 +96,5 @@ $app->delete(
     }
 );
 
-/**
- * Step 4: Run the Slim application
- *
- * This method should be called last. This executes the Slim application
- * and returns the HTTP response to the HTTP client.
- */
+// Run the slim application
 $app->run();
