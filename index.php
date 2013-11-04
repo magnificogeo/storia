@@ -13,11 +13,6 @@ require 'Slim/Slim.php';
 require( 'lib/mongodb.php' );
 require( 'lib/tokengenerator.php' );
 
-$collection_object = array(
-    'user' => $user_collection,
-    'stories' => $stories_collection
-    );
-
 $app = new \Slim\Slim();
 
 /* POST ROUTES HERE */
@@ -35,7 +30,7 @@ $app->get(
 /* POST ROUTES HERE */
 $app->post(
     '/api/login',
-    function () use ( $app, $user_collection ) {
+    function () use ( $app, $user_collection, $usermetadata_collection ) {
 
         // @TODO: write form validation using inbuilt php functions
         $user_name = $_POST['user_name'];
@@ -44,15 +39,19 @@ $app->post(
         // Check with MongoDB database here
         $login_query = $user_collection->findOne( array(
             'user_name' => $user_name,
-            'user_password' => $password
+            'password' => $password
             ) );
 
         // If user is in the database
         if ( $login_query ) {
 
+            $generated_token = generate_token();
+
+            $usermetadata_collection->findAndModify( array( 'user_name' => $user_name  ), array( 'user_name' => $user_name, 'token' => $generated_token ));
+
             $response = array(
                 "status" => "ok",
-                "token" => generate_token() // Need to generate token here @TODO: Write a token generator function
+                "token" => $generated_token
                 );
 
             // Return JSON response
@@ -135,23 +134,27 @@ $app->post(
 
 $app->post(
     '/api/upload',
-    function () use ( $app, $stories_collection ) {
+    function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
 
         $story_title = $_POST['story_title'];
         $story_caption = $_POST['story_caption'];
-        $story_images = $_POST['images'];
+        $story_images = $_POST['story_images'];
         $token = $_POST['token'];
         $timestamp = $_POST['timestamp'];
-        $username = $_POST['username'];
+        $user_name = $_POST['user_name'];
 
         // Check for existing user
-        $existing_user = $stories_collection->findOne( array(
-            'username' => $username
-        ));
- 
-        $response = array(
-            'status' => 'ok'
-            );
+        $existing_user = $usermetadata_collection->findOne( array(
+            'user_name' => $user_name
+            ) );
+
+        if ( !empty( $existing_user )) {
+
+            $current_storyid = $usermetadata_collection->distinct( 'current_storyid', array( 'username' => $username ));
+            var_dump( $current_storyid );
+
+        }
+
 
         //echo json_encode( $response ); 
     }
