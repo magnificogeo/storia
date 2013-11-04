@@ -117,6 +117,41 @@ $app->post(
     }
 );
 
+$app->post(
+    '/api/upload',
+    function () use ( $app, $stories_collection ) {
+
+        //$story_title = $_POST['story_title'];
+        //$story_caption = $_POST['story_caption'];
+        //$story_images = $_POST['images'];
+        //$token = $_POST['token'];
+        //$timestamp = $_POST['timestamp'];
+       /*
+        $username = $_POST['username'];
+
+        // Check for existing user
+        $existing_user = $stories_collection->findOne( array(
+            'username' => $username
+        ));
+
+        // If there is indeed such a user.
+        if ( $existing_user ) {
+
+
+
+
+        }
+        var_dump( $existing_user );
+
+
+
+        $response = array(
+            'status' => 'ok'
+            );
+
+        //echo json_encode( $response ); */
+    }
+);
 
 
 /* END OF POST ROUTES */
