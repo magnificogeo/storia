@@ -7,7 +7,14 @@ require( 'lib/tokengenerator.php' );
 
 $app = new \Slim\Slim();
 
-/* POST ROUTES HERE */
+/* GET ROUTES HERE */
+$app->get(
+    '/',
+    function() use ( $app ) {
+        echo "You are the chosen one";
+   }
+);
+
 $app->get(
     '/api/profile/:token',
     function($token) use ( $app, $usermetadata_collection, $stories_collection ) {
