@@ -110,7 +110,8 @@ $app->post(
 
             $generated_token = generate_token();
 
-            $usermetadata_collection->update(array( 'user_name' => $user_name  ), array( 'token' => $generated_token ));
+            $new_data = array('$set' => array('token' => $generated_token));
+            $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
 
             $response = array(
                 "status" => "ok",
