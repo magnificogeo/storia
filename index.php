@@ -35,11 +35,11 @@ $app->get(
             $user_name = $user_meta_data["user_name"];
 
             $user_stories = $stories_collection->find( array(
-                "user_name": $user_name
+                "user_name" => $user_name
             ) );
 
             foreach ($user_stories as $story) {
-                $stories->($story);
+                array_push( $stories, $story );
             }
 
             $response = array(
@@ -50,7 +50,7 @@ $app->get(
 
         echo json_encode( $response );
     }
-)
+);
 
 $app->get(
     '/api/feeds/:token',
@@ -71,11 +71,11 @@ $app->get(
             $user_name = $user_meta_data["user_name"];
 
             $user_stories = $stories_collection->find( array(
-                '$not' => array("user_name": $user_name);
+                '$not' => array("user_name" => $user_name)
             ) );
 
             foreach ($user_stories as $story) {
-                $stories->($story);
+                array_push( $stories, $story );
             }
 
             $response = array(
@@ -86,7 +86,7 @@ $app->get(
 
         echo json_encode( $response );
     }
-)
+);
 /* END OF POST ROUTES */
 
 
@@ -110,11 +110,11 @@ $app->post(
 
             $generated_token = generate_token();
 
-            $usermetadata_collection->findAndModify( array( 'user_name' => $user_name  ), array( 'user_name' => $user_name, 'token' => $generated_token ));
+            $usermetadata_collection->update(array( 'user_name' => $user_name  ), array( 'token' => $generated_token ));
 
             $response = array(
                 "status" => "ok",
-                "token" => generate_token() // Need to generate token here @TODO: Write a token generator function
+                "token" => $generated_token // Need to generate token here @TODO: Write a token generator function
             );
 
             // Return JSON response
@@ -171,7 +171,7 @@ $app->post(
                 "user_name" => $user_name,
                 "token" => $token,
                 "latest_story_id" => 0
-            )
+            );
 
             $user_object_id = $user_collection->insert($new_account);
             $user_meta_data = $usermetadata_collection->insert($meta_data);
