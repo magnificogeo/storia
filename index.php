@@ -1,12 +1,4 @@
 <?php
-/**
- * Step 1: Require the Slim Framework
- *
- * If you are not using Composer, you need to require the
- * Slim Framework and register its PSR-0 autoloader.
- *
- * If you are using Composer, you can skip this step.
- */
 require 'Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
@@ -70,9 +62,10 @@ $app->get(
             $stories = array();
             $user_name = $user_meta_data["user_name"];
 
-            $user_stories = $stories_collection->find( array(
-                '$not' => array("user_name" => $user_name)
-            ) );
+            $user_stories = $stories_collection->find( array( 
+                'user_name' => array( '$ne' => $user_name )
+                ));
+
 
             foreach ($user_stories as $story) {
                 array_push( $stories, $story );
@@ -216,17 +209,50 @@ $app->post(
 
         // Check for existing user
         $existing_user = $usermetadata_collection->findOne( array(
-            'user_name' => $user_name
+            'user_name' => $user_name,
+            'token' => $token
             ) );
 
         if ( !empty( $existing_user )) {
 
-            $current_storyid = $usermetadata_collection->distinct( 'current_storyid', array( 'username' => $username ));
-            var_dump( $current_storyid );
+            $user_meta_data = $usermetadata_collection->findOne( array( 'user_name' => $user_name ));
 
+            $latest_story_id = $user_meta_data['latest_story_id'];
+           
+            $new_data = array('$set' => array('latest_story_id' => $latest_story_id + 1 ));
+            $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
+
+            $story_image_array = array();
+    
+            $new_story = array(
+                'storyid' => $latest_story_id + 1,
+                'user_name' => $user_name,
+                'title' => $story_title,
+                'caption' => $story_caption,
+                'images' => $story_images,
+                'timestamp' => $timestamp
+            );
+
+            $user_object_id = $stories_collection->insert($new_story);
+
+            $response = array(
+                'status' => 'ok',
+                );
+
+            echo json_encode( $response );
+
+        } else {
+            $response = array(
+                'status' => 'error',
+                'error_message' => 'not logged in'
+                );
+
+            echo json_encode( $response );
+
+            $app->response->setStatus(400);
         }
 
-        //echo json_encode( $response );
+        
     }
 );
 
