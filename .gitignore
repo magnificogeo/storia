@@ -1,7 +1,1 @@
-*.py[cod]
-*~
-
-# mac crap
-.DS_Store
-
-.editor-config
+Slim

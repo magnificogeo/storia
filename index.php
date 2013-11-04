@@ -84,7 +84,7 @@ $app->post(
             'user_name' => $user_name
             ) );
 
-        if ($existing_user) {
+        if ( !empty($existing_user)) {
 
             $response = array(
                 "status" => "error",
@@ -96,8 +96,8 @@ $app->post(
         } else {
 
             // Store to mongodb
-            $password = $_POST["passowrd"],
-            $email = $_POST["email"],
+            $password = $_POST["password"];
+            $email = $_POST["email"];
             $new_account = array(
                 "user_name" => $user_name,
                 "password" => $password,

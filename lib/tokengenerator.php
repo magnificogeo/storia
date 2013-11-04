@@ -2,6 +2,6 @@
 
 function generate_token() {
 
-	return "THERE IS NO TOKEN YOU CHEEBEH!";
+	return MD5(uniqid());
 
 }
