@@ -25,7 +25,7 @@ $app->get(
     '/api/login',
     function () {
 
-       
+
 
 });
 /* END OF POST ROUTES */
@@ -35,13 +35,13 @@ $app->get(
 $app->post(
     '/api/login',
     function () use ( $app, $user_collection ) {
-        
+
         // @TODO: write form validation using inbuilt php functions
         $user_name = $_POST['user_name'];
         $password = $_POST['password'];
-        
+
         // Check with MongoDB database here
-        $login_query = $user_collection->findOne( array( 
+        $login_query = $user_collection->findOne( array(
             'user_name' => $user_name,
             'user_password' => $password
             ) );
@@ -72,6 +72,52 @@ $app->post(
         }
     }
 );
+
+$app->post(
+    '/api/signup',
+    function() use ($app, $user_collection){
+
+        $user_name = $_POST["user_name"];
+
+        // Check for existing user
+        $existing_user = $user_collection->findOne( array(
+            'user_name' => $user_name
+            ) );
+
+        if ($existing_user) {
+            $response = array(
+                "status" => "error",
+                "message" => "Username already exist",
+                $app->response->setStatus(400);
+            )
+        } else {
+            $password = $_POST["passowrd"],
+            $email = $_POST["email"],
+            $new_account = array(
+                "user_name" => $user_name,
+                "password" => $password,
+                "email" => $email
+            );
+            $user_object_id =  $user_collection->insert($new_account);
+            // Check to ensure new account is created in mongodb
+            if ($user_object_id){
+                $response = array(
+                    "status" => "ok",
+                    "token" => generate_token()
+                )
+            } else {
+                $response = array(
+                    "status" => "error",
+                    "message" => "Failed to create new account",
+                    $app->response->setStatus(400);
+                )
+            }
+        }
+        echo json_encode( $response );
+    }
+);
+
+
 
 /* END OF POST ROUTES */
 
