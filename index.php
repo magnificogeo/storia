@@ -85,12 +85,17 @@ $app->post(
             ) );
 
         if ($existing_user) {
+
             $response = array(
                 "status" => "error",
                 "message" => "Username already exist",
-                $app->response->setStatus(400);
-            )
+            );
+
+            $app->response->setStatus(400);
+
         } else {
+
+            // Store to mongodb
             $password = $_POST["passowrd"],
             $email = $_POST["email"],
             $new_account = array(
@@ -98,23 +103,33 @@ $app->post(
                 "password" => $password,
                 "email" => $email
             );
-            $user_object_id =  $user_collection->insert($new_account);
+
+            $user_object_id = $user_collection->insert($new_account);
+
             // Check to ensure new account is created in mongodb
             if ($user_object_id){
+
                 $response = array(
                     "status" => "ok",
                     "token" => generate_token()
-                )
+                );
+
             } else {
+
                 $response = array(
                     "status" => "error",
                     "message" => "Failed to create new account",
-                    $app->response->setStatus(400);
-                )
+                );
+
+                $app->response->setStatus(400);
+
             }
         }
+
         echo json_encode( $response );
+
     }
+
 );
 
 
