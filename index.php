@@ -22,9 +22,10 @@ $app = new \Slim\Slim();
 
 /* POST ROUTES HERE */
 $app->get(
-    '/api/login',
+    '/',
     function () {
 
+        echo "Hello there!";
 
 
 });
@@ -136,61 +137,28 @@ $app->post(
     '/api/upload',
     function () use ( $app, $stories_collection ) {
 
-        //$story_title = $_POST['story_title'];
-        //$story_caption = $_POST['story_caption'];
-        //$story_images = $_POST['images'];
-        //$token = $_POST['token'];
-        //$timestamp = $_POST['timestamp'];
-       /*
+        $story_title = $_POST['story_title'];
+        $story_caption = $_POST['story_caption'];
+        $story_images = $_POST['images'];
+        $token = $_POST['token'];
+        $timestamp = $_POST['timestamp'];
         $username = $_POST['username'];
 
         // Check for existing user
         $existing_user = $stories_collection->findOne( array(
             'username' => $username
         ));
-
-        // If there is indeed such a user.
-        if ( $existing_user ) {
-
-
-
-
-        }
-        var_dump( $existing_user );
-
-
-
+ 
         $response = array(
             'status' => 'ok'
             );
 
-        //echo json_encode( $response ); */
+        //echo json_encode( $response ); 
     }
 );
 
 
 /* END OF POST ROUTES */
-
-// PUT route
-$app->put(
-    '/put',
-    function () {
-        echo 'This is a PUT route';
-    }
-);
-
-// PATCH route
-$app->patch('/patch', function () {
-    echo 'This is a PATCH route';
-});
-
-// DELETE route
-$app->delete(
-    '/delete',
-    function () {
-        echo 'This is a DELETE route';
-    }
-);
 
 // Run the slim application
 $app->run();

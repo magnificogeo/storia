@@ -9,6 +9,7 @@ $db = $m->juubs;
 // Collection objects
 $user_collection = $db->user;
 $stories_collection = $db->stories;
+$usermetadata_collection = $db->usermetadata;
 
 
 
