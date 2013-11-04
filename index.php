@@ -22,13 +22,76 @@ $app = new \Slim\Slim();
 
 /* POST ROUTES HERE */
 $app->get(
-    '/',
-    function () {
+    '/api/profile/:token',
+    function($token) use ( $app, $usermetadata_collection, $stories_collection ) {
+        $user_meta_data = $usermetadata_collection->findOne( array(
+            'token' => $token
+            ) );
 
-        echo "Hello there!";
+        if (!$user_meta_data){
+            $response = array(
+                "status" => "error",
+                "message" => "User data not found"
+            );
+            $app->response->setStatus(400);
 
+        } else {
+            $stories = array();
+            $user_name = $user_meta_data["user_name"];
 
-});
+            $user_stories = $stories_collection->find( array(
+                "user_name": $user_name
+            ) );
+
+            foreach ($user_stories as $story) {
+                $stories->($story);
+            }
+
+            $response = array(
+                "status" => "ok",
+                "stories" => $stories
+            );
+        }
+
+        echo json_encode( $response );
+    }
+)
+
+$app->get(
+    '/api/feeds/:token',
+    function($token) use ( $app, $usermetadata_collection, $stories_collection ) {
+        $user_meta_data = $usermetadata_collection->findOne( array(
+            'token' => $token
+            ) );
+
+        if (!$user_meta_data){
+            $response = array(
+                "status" => "error",
+                "message" => "User data not found"
+            );
+            $app->response->setStatus(400);
+
+        } else {
+            $stories = array();
+            $user_name = $user_meta_data["user_name"];
+
+            $user_stories = $stories_collection->find( array(
+                '$not' => array("user_name": $user_name);
+            ) );
+
+            foreach ($user_stories as $story) {
+                $stories->($story);
+            }
+
+            $response = array(
+                "status" => "ok",
+                "stories" => $stories
+            );
+        }
+
+        echo json_encode( $response );
+    }
+)
 /* END OF POST ROUTES */
 
 
@@ -53,7 +116,7 @@ $app->post(
             $response = array(
                 "status" => "ok",
                 "token" => generate_token() // Need to generate token here @TODO: Write a token generator function
-                );
+            );
 
             // Return JSON response
             echo json_encode( $response );
@@ -64,7 +127,7 @@ $app->post(
             $response = array(
                 "status" => "error",
                 "message" => "Your user/password combination is incorrect" // Need to generate token here @TODO: Write a token generator function
-                );
+            );
 
             echo json_encode( $response );
 
@@ -76,7 +139,7 @@ $app->post(
 
 $app->post(
     '/api/signup',
-    function() use ($app, $user_collection){
+    function() use ($app, $user_collection, $usermetadata_collection){
 
         $user_name = $_POST["user_name"];
 
@@ -97,6 +160,7 @@ $app->post(
         } else {
 
             // Store to mongodb
+            $token = generate_token();
             $password = $_POST["password"];
             $email = $_POST["email"];
             $new_account = array(
@@ -104,15 +168,21 @@ $app->post(
                 "password" => $password,
                 "email" => $email
             );
+            $meta_data = array(
+                "user_name" => $user_name,
+                "token" => $token,
+                "latest_story_id" => 0
+            )
 
             $user_object_id = $user_collection->insert($new_account);
+            $user_meta_data = $usermetadata_collection->insert($meta_data);
 
             // Check to ensure new account is created in mongodb
             if ($user_object_id){
 
                 $response = array(
                     "status" => "ok",
-                    "token" => generate_token()
+                    "token" => $token
                 );
 
             } else {
@@ -148,12 +218,12 @@ $app->post(
         $existing_user = $stories_collection->findOne( array(
             'username' => $username
         ));
- 
+
         $response = array(
             'status' => 'ok'
             );
 
-        //echo json_encode( $response ); 
+        //echo json_encode( $response );
     }
 );
 
