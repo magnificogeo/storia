@@ -7,6 +7,10 @@ require( 'lib/tokengenerator.php' );
 
 $app = new \Slim\Slim();
 
+// Enable Logging //
+$app->config( 'debug', true );
+
+
 /* GET ROUTES HERE */
 $app->get(
     '/',
