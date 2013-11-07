@@ -21,7 +21,7 @@ $app->get(
 
 $app->get(
     '/test',
-    function() use ( $app ) ) {
+    function() use ( $app ) {
         echo "test successful!";
     }
 );
