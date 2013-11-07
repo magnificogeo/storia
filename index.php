@@ -20,6 +20,13 @@ $app->get(
 );
 
 $app->get(
+    '/test',
+    function() use ( $app ) ) {
+        echo "test successful!";
+    }
+);
+
+$app->get(
     '/api/profile/:token',
     function($token) use ( $app, $usermetadata_collection, $stories_collection ) {
         $user_meta_data = $usermetadata_collection->findOne( array(
