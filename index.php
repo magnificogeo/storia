@@ -64,42 +64,32 @@ $app->get(
 
 $app->get(
     '/api/feeds/',
-    function($token) use ( $app, $usermetadata_collection, $stories_collection ) {
-
+    function() use ( $app, $stories_collection ) {
+        $stories = array();
         $req = $app->request();
         $start = $req->get('start');
 
-        
+        $stories_found = $stories_collection->find( array())
+            ->sort(array('posted_time' => -1))
+            ->skip($start)
+            ->limit(10);
 
-        if (!$user_meta_data){
-            $response = array(
-                "status" => "error",
-                "message" => "User data not found"
-            );
-            $app->response->setStatus(400);
-
-        } else {
-            $stories = array();
-            $user_id = $user_meta_data["user_id"];
-
-            $user_stories = $stories_collection->find( array( 
-                'user_id' => array( '$ne' => $user_id )
-                ));
-
-
-            foreach ($user_stories as $story) {
-                array_push( $stories, $story );
-            }
-
-            $response = array(
-                "status" => "ok",
-                "stories" => $stories
-            );
+        foreach ($stories_found as $story){
+            array_push($stories, $story);
         }
+
+        $updated_start = $start + 10;
+    
+        $response = array(
+            "status" => "ok",
+            "stories" => $stories,
+            "start" => $updated_start
+        );        
 
         echo json_encode( $response );
     }
 );
+
 
 $app->get(
     '/api/story/:storyid/',
