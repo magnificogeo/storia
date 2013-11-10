@@ -78,7 +78,7 @@ $app->get(
             array_push($stories, $story);
         }
 
-        $updated_start = $start + 10;
+        $updated_start = $start + count($stories);
     
         $response = array(
             "status" => "ok",
@@ -179,7 +179,6 @@ $app->post(
 $app->post(
     '/api/signup',
     function() use ($app, $user_collection, $usermetadata_collection){
-
 
         $user_name = $_POST["user_name"];
 
