@@ -108,8 +108,11 @@ $app->get(
             'unique_story_id' => $storyid
             ) );
 
+
+        var_dump( $story_id_retrieval );
+
         if ( $story_id_retrieval ) {
-            echo json_encode( $story_id_retrieval );
+            //echo json_encode( $story_id_retrieval );
         } else {
             $app->setStatus(400);
             echo "There is no such story id";
@@ -141,12 +144,12 @@ $app->post(
 
             $new_data = array('$set' => array('token' => $generated_token));
             $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
-            $user_id = $login_query["user_id"];
+            $user_name = $login_query["user_name"];
 
             $response = array(
                 "status" => "ok",
                 "token" => $generated_token, // Need to generate token here @TODO: Write a token generator function
-                "user_id" => $user_id
+                "user_name" => $user_name
             );
 
             // Return JSON response
@@ -206,7 +209,7 @@ $app->post(
                 "user_name" => $user_name,
                 "user_id" => $user_id,
                 "token" => $token,
-                "latest_story_count" => 0
+                "story_count" => 0
             );
 
             $user_object_id = $user_collection->insert($new_account);
@@ -248,10 +251,8 @@ $app->post(
         $description = $_POST['description'];
         $images = $_POST['images'];
 
-        var_dump( $images );
-
         // Check for existing user
-        $existing_user = $usermetadata_collection->findOne( array(
+        $existing_user = $user_collection->findOne( array(
             'user_id' => $user_id,
             ) );
 
@@ -259,9 +260,9 @@ $app->post(
 
             $user_meta_data = $usermetadata_collection->findOne( array( 'user_id' => $user_id ));
 
-            $latest_story_count = $user_meta_data['latest_story_count'];
+            $story_count = $user_meta_data['story_count'];
            
-            $new_data = array('$set' => array('latest_story_count' => $latest_story_count + 1 ));
+            $new_data = array('$set' => array('story_count' => $story_count + 1 ));
             $usermetadata_collection->update(array( 'user_id' => $user_id  ), $new_data);
         
             $new_story = array(

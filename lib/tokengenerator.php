@@ -2,6 +2,6 @@
 
 function generate_token() {
 
-	return MD5( uniqid(rand()), true );
+	return MD5( uniqid() );
 
 }
