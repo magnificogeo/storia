@@ -104,8 +104,11 @@ $app->get(
     '/api/story/:storyid/',
     function($storyid) use ( $app, $usermetadata_collection, $stories_collection ) {
 
-        var_dump( $storyid );
+        $story_id_retrieval = $stories_collection->findOne( array(
+            'unique_id' => $storyid
+            ) );
 
+        var_dump( $story_id_retrieval );
 
     }
 );
@@ -166,7 +169,7 @@ $app->post(
     function() use ($app, $user_collection, $usermetadata_collection){
 
 
-        $user_name = $_POST["user_name"]
+        $user_name = $_POST["user_name"];
 
         // Check for existing user
         $existing_user = $user_collection->findOne( array(
@@ -196,7 +199,7 @@ $app->post(
                 "email" => $email
             );
             $meta_data = array(
-                "user_name" => $user_name
+                "user_name" => $user_name,
                 "user_id" => $user_id,
                 "token" => $token,
                 "latest_story_id" => 0
@@ -260,7 +263,7 @@ $app->post(
             $new_story = array(
                 'storyid' => $latest_story_id + 1,
                 'user_id' => $user_id,
-                'unique_id' => $user_id . '_' . uniqid();
+                'unique_id' => $user_id . '_' . uniqid(),
                 'title' => $title,
                 'posted_time' => $posted_time,
                 'description' => $description,
