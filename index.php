@@ -284,7 +284,7 @@ $app->post(
                 'storyid' => $user_id . '_' . uniqid(),
                 'user_id' => $user_id,
                 'title' => $title,
-                'posted_time' => $posted_time,
+                'posted_time' => (int) $posted_time,
                 'description' => $description,
                 'images' => $images
             );
