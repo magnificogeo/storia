@@ -102,20 +102,34 @@ $app->get(
 
 $app->get(
     '/api/story/:storyid/',
-    function($storyid) use ( $app, $usermetadata_collection, $stories_collection ) {
+    function($storyid) use ( $app, $user_collection, $usermetadata_collection, $stories_collection ) {
 
-        $story_id_retrieval = $stories_collection->findOne( array(
-            'unique_story_id' => $storyid
-            ) );
+        $stories_collection_find = $stories_collection->findOne( array(
+            'storyid' => $storyid
+            ));
 
+        $user_collection_find = $user_collection->findOne(array(
+            'user_id' => $stories_collection_find['user_id']
+            ));
 
-        var_dump( $story_id_retrieval );
+        if ( $stories_collection_find ) {
 
-        if ( $story_id_retrieval ) {
-            //echo json_encode( $story_id_retrieval );
+            $response = array(
+            'user_name' => $user_collection_find['user_name'],
+            'title' => $stories_collection_find['title'],
+            'posted_time' => $stories_collection_find['posted_time'],
+            'description' => $stories_collection_find['description'],
+            'images' => $stories_collection_find['images']
+            );
+
+            echo json_encode( $response );
         } else {
-            $app->setStatus(400);
-            echo "There is no such story id";
+            $response = array(
+                "status" => "error",
+                "message" => "The storyid you were trying to find seems to be missing!"
+            );
+            echo json_encode( $response );
+            $app->response->setStatus(400);
         }
     }
 );
