@@ -63,8 +63,9 @@ $app->get(
 );
 
 $app->get(
-    '/api/feeds/:token',
+    '/api/feeds/',
     function($token) use ( $app, $usermetadata_collection, $stories_collection ) {
+
         $user_meta_data = $usermetadata_collection->findOne( array(
             'token' => $token
             ) );
@@ -107,12 +108,12 @@ $app->post(
     function () use ( $app, $user_collection, $usermetadata_collection ) {
 
         // @TODO: write form validation using inbuilt php functions
-        $user_id = $_POST['user_id'];
+        $user_name = $_POST['user_name'];
         $password = $_POST['password'];
 
         // Check with MongoDB database here
         $login_query = $user_collection->findOne( array(
-            'user_id' => $user_id,
+            'user_name' => $user_name,
             'password' => $password
             ) );
 
@@ -122,11 +123,13 @@ $app->post(
             $generated_token = generate_token();
 
             $new_data = array('$set' => array('token' => $generated_token));
-            $usermetadata_collection->update(array( 'user_id' => $user_id  ), $new_data);
+            $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
+            $user_id = $login_query["user_id"];
 
             $response = array(
                 "status" => "ok",
-                "token" => $generated_token // Need to generate token here @TODO: Write a token generator function
+                "token" => $generated_token, // Need to generate token here @TODO: Write a token generator function
+                "user_id" => $user_id
             );
 
             // Return JSON response
@@ -152,11 +155,12 @@ $app->post(
     '/api/signup',
     function() use ($app, $user_collection, $usermetadata_collection){
 
-        $user_id = $_POST["user_id"];
+
+        $user_name = $_POST["user_name"]
 
         // Check for existing user
         $existing_user = $user_collection->findOne( array(
-            'user_id' => $user_id
+            'user_name' => $user_name
             ) );
 
         if ( !empty($existing_user)) {
@@ -174,12 +178,15 @@ $app->post(
             $token = generate_token();
             $password = $_POST["password"];
             $email = $_POST["email"];
+            $user_id = $user_name."_".uniqid();
             $new_account = array(
+                "user_name" => $user_name,
                 "user_id" => $user_id,
                 "password" => $password,
                 "email" => $email
             );
             $meta_data = array(
+                "user_name" => $user_name
                 "user_id" => $user_id,
                 "token" => $token,
                 "latest_story_id" => 0
