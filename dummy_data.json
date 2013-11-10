@@ -1,99 +1,38 @@
 // stories collection
 {
-  "storyid": 2,
-  "user_id": "georgemoh",
-  "title": "georgemoh2",
-  "posted_time": "posted_time",
-  "description": "description",
+  "storyid": "ianloke_527f04ab7611b_527f0a6a8f218",
+  "user_id": "ianloke_527f04ab7611b",
+  "title": "ianlokestorytitle3",
+  "posted_time": "98989864654",
+  "description": "ianlokestorydescription3",
   "images": [
     {
-      "image_url": "image_url_1",
-      "caption": "image_caption_1"
+      "image_url": "imageurl1",
+      "caption": "imagecaption1"
     },
     {
-      "image_url": "image_url_2",
-      "caption": "image_caption_2"
-    }
-  ]
-}
-
-{
-  "storyid": 2,
-  "user_id": "ianloke",
-  "title": "ianloke2",
-  "posted_time": "posted_time",
-  "description": "description",
-  "images": [
-    {
-      "image_url": "image_url_1",
-      "caption": "image_caption_1"
+      "image_url": "imageurl2",
+      "caption": "imagecaption2"
     },
     {
-      "image_url": "image_url_2",
-      "caption": "image_caption_2"
-    }
-  ]
-}
-
-{
-  "storyid": 1,
-  "user_id": "ianloke",
-  "title": "ianloke",
-  "posted_time": "posted_time",
-  "description": "description",
-  "images": [
-    {
-      "image_url": "image_url_1",
-      "caption": "image_caption_1"
-    },
-    {
-      "image_url": "image_url_2",
-      "caption": "image_caption_2"
-    }
-  ]
-}
-
-{
-  "storyid": 1,
-  "user_id": "georgemoh",
-  "title": "georgemoh",
-  "posted_time": "posted_time",
-  "description": "description",
-  "images": [
-    {
-      "image_url": "image_url_1",
-      "caption": "image_caption_1"
-    },
-    {
-      "'image_url": "image_url_2",
-      "'caption'": "image_caption_2"
+      "image_url": "imageurl3",
+      "caption": "imagecaption3"
     }
   ]
 }
 
 // usermetadata collection
 {
-  "latest_story_id": 2,
-  "token": "53e774c66eab62e401a78214d2de9e4e",
-  "user_id": "georgemoh"
-}
-
-{
-  "latest_story_id": 2,
-  "token": "f9111bf4c40ef1c11c95d9a81f274364",
-  "user_id": "ianloke"
+  "user_name": "ianloke",
+  "user_id": "ianloke_527f04ab7611b",
+  "token": "5a68ddc3867f683c98c328e3170811d1",
+  "story_count": NumberInt(4)
 }
 
 // user collection
 {
-  "email": "georgemoh@georgemoh.com",
-  "password": "georgemoh",
-  "user_id": "georgemoh"
+  "user_name": "ianloke",
+  "user_id": "ianloke_527f04ab7611b",
+  "password": "ianloketestpassword",
+  "email": "ianloke@ianloke.com"
 }
-{
-   "_id": ObjectId("52771236fe9373f4631f3f2c"),
-   "email": "ianloke@ianloke.com",
-   "password": "ianloke",
-   "user_id": "ianloke" 
-}
-
