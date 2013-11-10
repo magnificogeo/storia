@@ -215,20 +215,20 @@ $app->post(
 );
 
 $app->post(
-    '/api/upload',
+    '/api/story',
     function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
 
-        $story_title = $_POST['story_title'];
-        $story_caption = $_POST['story_caption'];
-        $story_images = $_POST['story_images'];
-        $token = $_POST['token'];
-        $timestamp = $_POST['timestamp'];
         $user_id = $_POST['user_id'];
+        $title = $_POST['title'];
+        $posted_time = $_POST['posted_time'];
+        $description = $_POST['description'];
+        $images = $_POST['images'];
+
+        var_dump( $images );
 
         // Check for existing user
         $existing_user = $usermetadata_collection->findOne( array(
             'user_id' => $user_id,
-            'token' => $token
             ) );
 
         if ( !empty( $existing_user )) {
@@ -239,16 +239,14 @@ $app->post(
            
             $new_data = array('$set' => array('latest_story_id' => $latest_story_id + 1 ));
             $usermetadata_collection->update(array( 'user_id' => $user_id  ), $new_data);
-
-            $story_image_array = array();
-    
+        
             $new_story = array(
                 'storyid' => $latest_story_id + 1,
                 'user_id' => $user_id,
-                'title' => $story_title,
-                'caption' => $story_caption,
-                'images' => $story_images,
-                'timestamp' => $timestamp
+                'title' => $title,
+                'posted_time' => $posted_time,
+                'description' => $description,
+                'images' => $images
             );
 
             $user_object_id = $stories_collection->insert($new_story);
@@ -262,36 +260,13 @@ $app->post(
         } else {
             $response = array(
                 'status' => 'error',
-                'error_message' => 'not logged in'
+                'error_message' => 'You are neither logged in or seem to be a registered user.'
                 );
 
             echo json_encode( $response );
 
             $app->response->setStatus(400);
         }
-
-        
-    }
-);
-
-$app->post(
-    '/api/story',
-    function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
-
-        $user_id = $_POST['user_id'];
-        $title = $_POST['title'];
-        $posted_time = $_POST['posted_time'];
-        $description = $_POST['description'];
-        $images = $_POST['images'];
-
-        // Check for existing user
-        $existing_user = $usermetadata_collection->findOne( array(
-            'user_id' => $user_id,
-            ) );
-
-
-
-
     }
 );
 
