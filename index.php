@@ -105,11 +105,15 @@ $app->get(
     function($storyid) use ( $app, $usermetadata_collection, $stories_collection ) {
 
         $story_id_retrieval = $stories_collection->findOne( array(
-            'unique_id' => $storyid
+            'unique_story_id' => $storyid
             ) );
 
-        var_dump( $story_id_retrieval );
-
+        if ( $story_id_retrieval ) {
+            echo json_encode( $story_id_retrieval );
+        } else {
+            $app->setStatus(400);
+            echo "There is no such story id";
+        }
     }
 );
 /* END OF GET ROUTES */
@@ -202,7 +206,7 @@ $app->post(
                 "user_name" => $user_name,
                 "user_id" => $user_id,
                 "token" => $token,
-                "latest_story_id" => 0
+                "latest_story_count" => 0
             );
 
             $user_object_id = $user_collection->insert($new_account);
@@ -255,15 +259,14 @@ $app->post(
 
             $user_meta_data = $usermetadata_collection->findOne( array( 'user_id' => $user_id ));
 
-            $latest_story_id = $user_meta_data['latest_story_id'];
+            $latest_story_count = $user_meta_data['latest_story_count'];
            
-            $new_data = array('$set' => array('latest_story_id' => $latest_story_id + 1 ));
+            $new_data = array('$set' => array('latest_story_count' => $latest_story_count + 1 ));
             $usermetadata_collection->update(array( 'user_id' => $user_id  ), $new_data);
         
             $new_story = array(
-                'storyid' => $latest_story_id + 1,
+                'storyid' => $user_id . '_' . uniqid(),
                 'user_id' => $user_id,
-                'unique_id' => $user_id . '_' . uniqid(),
                 'title' => $title,
                 'posted_time' => $posted_time,
                 'description' => $description,
