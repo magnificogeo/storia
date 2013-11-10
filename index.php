@@ -99,7 +99,17 @@ $app->get(
         echo json_encode( $response );
     }
 );
-/* END OF POST ROUTES */
+
+$app->get(
+    '/api/story/:storyid/',
+    function($storyid) use ( $app, $usermetadata_collection, $stories_collection ) {
+
+        var_dump( $storyid );
+
+
+    }
+);
+/* END OF GET ROUTES */
 
 
 /* POST ROUTES HERE */
@@ -250,6 +260,7 @@ $app->post(
             $new_story = array(
                 'storyid' => $latest_story_id + 1,
                 'user_id' => $user_id,
+                'unique_id' => $user_id . '_' . uniqid();
                 'title' => $title,
                 'posted_time' => $posted_time,
                 'description' => $description,
