@@ -42,10 +42,10 @@ $app->get(
 
         } else {
             $stories = array();
-            $user_name = $user_meta_data["user_name"];
+            $user_id = $user_meta_data["user_id"];
 
             $user_stories = $stories_collection->find( array(
-                "user_name" => $user_name
+                "user_id" => $user_id
             ) );
 
             foreach ($user_stories as $story) {
@@ -78,10 +78,10 @@ $app->get(
 
         } else {
             $stories = array();
-            $user_name = $user_meta_data["user_name"];
+            $user_id = $user_meta_data["user_id"];
 
             $user_stories = $stories_collection->find( array( 
-                'user_name' => array( '$ne' => $user_name )
+                'user_id' => array( '$ne' => $user_id )
                 ));
 
 
@@ -107,12 +107,12 @@ $app->post(
     function () use ( $app, $user_collection, $usermetadata_collection ) {
 
         // @TODO: write form validation using inbuilt php functions
-        $user_name = $_POST['user_name'];
+        $user_id = $_POST['user_id'];
         $password = $_POST['password'];
 
         // Check with MongoDB database here
         $login_query = $user_collection->findOne( array(
-            'user_name' => $user_name,
+            'user_id' => $user_id,
             'password' => $password
             ) );
 
@@ -122,7 +122,7 @@ $app->post(
             $generated_token = generate_token();
 
             $new_data = array('$set' => array('token' => $generated_token));
-            $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
+            $usermetadata_collection->update(array( 'user_id' => $user_id  ), $new_data);
 
             $response = array(
                 "status" => "ok",
@@ -152,11 +152,11 @@ $app->post(
     '/api/signup',
     function() use ($app, $user_collection, $usermetadata_collection){
 
-        $user_name = $_POST["user_name"];
+        $user_id = $_POST["user_id"];
 
         // Check for existing user
         $existing_user = $user_collection->findOne( array(
-            'user_name' => $user_name
+            'user_id' => $user_id
             ) );
 
         if ( !empty($existing_user)) {
@@ -175,12 +175,12 @@ $app->post(
             $password = $_POST["password"];
             $email = $_POST["email"];
             $new_account = array(
-                "user_name" => $user_name,
+                "user_id" => $user_id,
                 "password" => $password,
                 "email" => $email
             );
             $meta_data = array(
-                "user_name" => $user_name,
+                "user_id" => $user_id,
                 "token" => $token,
                 "latest_story_id" => 0
             );
@@ -223,28 +223,28 @@ $app->post(
         $story_images = $_POST['story_images'];
         $token = $_POST['token'];
         $timestamp = $_POST['timestamp'];
-        $user_name = $_POST['user_name'];
+        $user_id = $_POST['user_id'];
 
         // Check for existing user
         $existing_user = $usermetadata_collection->findOne( array(
-            'user_name' => $user_name,
+            'user_id' => $user_id,
             'token' => $token
             ) );
 
         if ( !empty( $existing_user )) {
 
-            $user_meta_data = $usermetadata_collection->findOne( array( 'user_name' => $user_name ));
+            $user_meta_data = $usermetadata_collection->findOne( array( 'user_id' => $user_id ));
 
             $latest_story_id = $user_meta_data['latest_story_id'];
            
             $new_data = array('$set' => array('latest_story_id' => $latest_story_id + 1 ));
-            $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
+            $usermetadata_collection->update(array( 'user_id' => $user_id  ), $new_data);
 
             $story_image_array = array();
     
             $new_story = array(
                 'storyid' => $latest_story_id + 1,
-                'user_name' => $user_name,
+                'user_id' => $user_id,
                 'title' => $story_title,
                 'caption' => $story_caption,
                 'images' => $story_images,
@@ -274,6 +274,26 @@ $app->post(
     }
 );
 
+$app->post(
+    '/api/story',
+    function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
+
+        $user_id = $_POST['user_id'];
+        $title = $_POST['title'];
+        $posted_time = $_POST['posted_time'];
+        $description = $_POST['description'];
+        $images = $_POST['images'];
+
+        // Check for existing user
+        $existing_user = $usermetadata_collection->findOne( array(
+            'user_id' => $user_id,
+            ) );
+
+
+
+
+    }
+);
 
 /* END OF POST ROUTES */
 
