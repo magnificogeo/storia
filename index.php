@@ -66,9 +66,10 @@ $app->get(
     '/api/feeds/',
     function($token) use ( $app, $usermetadata_collection, $stories_collection ) {
 
-        $user_meta_data = $usermetadata_collection->findOne( array(
-            'token' => $token
-            ) );
+        $req = $app->request();
+        $start = $req->get('start');
+
+        
 
         if (!$user_meta_data){
             $response = array(
