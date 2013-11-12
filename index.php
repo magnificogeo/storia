@@ -158,11 +158,12 @@ $app->post(
             $new_data = array('$set' => array('token' => $generated_token));
             $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
             $user_name = $login_query["user_name"];
+            $user_id = $login_query["user_id"];
 
             $response = array(
                 "status" => "ok",
                 "token" => $generated_token, // Need to generate token here @TODO: Write a token generator function
-                "user_id" => $user_id
+                "user_name" => $user_id
             );
 
             // Return JSON response
