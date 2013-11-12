@@ -162,7 +162,7 @@ $app->post(
             $response = array(
                 "status" => "ok",
                 "token" => $generated_token, // Need to generate token here @TODO: Write a token generator function
-                "user_name" => $user_name
+                "user_id" => $user_id
             );
 
             // Return JSON response
