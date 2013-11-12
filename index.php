@@ -79,7 +79,7 @@ $app->get(
             array_push($stories, $story);
         }
 
-        $updated_start = $start + 10;
+        $updated_start = $start + count($stories);
     
         $response = array(
             "status" => "ok",
