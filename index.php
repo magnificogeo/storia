@@ -59,6 +59,7 @@ $app->get(
         }
 
         echo json_encode( $response );
+        $app->response->headers->set('Content-Type', 'application/json');
     }
 );
 
@@ -87,6 +88,7 @@ $app->get(
         );        
 
         echo json_encode( $response );
+        $app->response->headers->set('Content-Type', 'application/json');
     }
 );
 
@@ -114,12 +116,14 @@ $app->get(
             );
 
             echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
         } else {
             $response = array(
                 "status" => "error",
                 "message" => "The storyid you were trying to find seems to be missing!"
             );
             echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
             $app->response->setStatus(400);
         }
     }
@@ -132,15 +136,19 @@ $app->post(
     '/api/login',
     function () use ( $app, $user_collection, $usermetadata_collection ) {
 
+        $slim_environment_vars = $app->environment;
+        $slim_input = json_decode( $slim_environment_vars['slim.input'] );
+        
         // @TODO: write form validation using inbuilt php functions
-        $user_name = $_POST['user_name'];
-        $password = $_POST['password'];
+        $user_name = $slim_input->user_name;
+        $password = $slim_input->password;
 
         // Check with MongoDB database here
         $login_query = $user_collection->findOne( array(
             'user_name' => $user_name,
             'password' => $password
-            ) );
+            ) 
+        );
 
         // If user is in the database
         if ( $login_query ) {
@@ -159,6 +167,7 @@ $app->post(
 
             // Return JSON response
             echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
 
         } else {
 
@@ -169,19 +178,21 @@ $app->post(
             );
 
             echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
 
             $app->response->setStatus(400);
-
-        }
+        } 
     }
 );
 
 $app->post(
     '/api/signup',
-    function() use ($app, $user_collection, $usermetadata_collection){
+    function() use ($app, $user_collection, $usermetadata_collection) {
 
+        $slim_environment_vars = $app->environment;
+        $slim_input = json_decode( $slim_environment_vars['slim.input'] );
 
-        $user_name = $_POST["user_name"];
+        $user_name = $slim_input->user_name;
 
         // Check for existing user
         $existing_user = $user_collection->findOne( array(
@@ -201,8 +212,8 @@ $app->post(
 
             // Store to mongodb
             $token = generate_token();
-            $password = $_POST["password"];
-            $email = $_POST["email"];
+            $password = $slim_input->password;
+            $email = $slim_input->email;
             $user_id = $user_name."_".uniqid();
             $new_account = array(
                 "user_name" => $user_name,
@@ -225,7 +236,8 @@ $app->post(
 
                 $response = array(
                     "status" => "ok",
-                    "token" => $token
+                    "token" => $token,
+                    "user_id" => $user_id
                 );
 
             } else {
@@ -241,6 +253,7 @@ $app->post(
         }
 
         echo json_encode( $response );
+        $app->response->headers->set('Content-Type', 'application/json');
 
     }
 
@@ -250,11 +263,14 @@ $app->post(
     '/api/story',
     function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
 
-        $user_id = $_POST['user_id'];
-        $title = $_POST['title'];
-        $posted_time = $_POST['posted_time'];
-        $description = $_POST['description'];
-        $images = $_POST['images'];
+        $slim_environment_vars = $app->environment;
+        $slim_input = json_decode( $slim_environment_vars['slim.input'] );
+
+        $user_id = $slim_input->user_id;
+        $title = $slim_input->title;
+        $posted_time = $slim_input->posted_time;
+        $description = $slim_input->description;
+        $images = $slim_input->images;
 
         // Check for existing user
         $existing_user = $user_collection->findOne( array(
@@ -272,6 +288,7 @@ $app->post(
         
             $new_story = array(
                 'storyid' => $user_id . '_' . uniqid(),
+                'user_name' =>  $existing_user['user_name'],
                 'user_id' => $user_id,
                 'title' => $title,
                 'posted_time' => (int) $posted_time,
@@ -286,6 +303,7 @@ $app->post(
                 );
 
             echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
 
         } else {
             $response = array(
@@ -294,9 +312,10 @@ $app->post(
                 );
 
             echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
 
             $app->response->setStatus(400);
-        }
+        } 
     }
 );
 
