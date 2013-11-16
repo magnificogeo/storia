@@ -94,25 +94,36 @@ $app->get(
 
 
 $app->get(
-    '/api/story/:storyid/',
-    function($storyid) use ( $app, $user_collection, $usermetadata_collection, $stories_collection ) {
+    '/api/story/:story_id/',
+    function($story_id) use ( $app, $user_collection, $usermetadata_collection, $stories_collection, $likes_collection, $comments_collection ) {
 
-        $stories_collection_find = $stories_collection->findOne( array(
-            'storyid' => $storyid
-            ));
-
-        $user_collection_find = $user_collection->findOne(array(
-            'user_id' => $stories_collection_find['user_id']
-            ));
+        $stories_collection_find = $stories_collection->findOne( array( 'story_id' => $story_id ) );
+        $user_collection_find = $user_collection->findOne(array( 'user_id' => $stories_collection_find['user_id'] ) );
 
         if ( $stories_collection_find ) {
+            # Find number of lights in a story
+            $number_of_likes=$likes_collection->count(array("story_id" => $story_id));
+            # Find comments for the story
+            $comments = array();
+            $comments_retrieved = $comments_collection->find( array( 'story_id' => $story_id ) );
+            foreach ($comments_retrieved as $comment) {
+                $commenter_user_name = $usermetadata_collection->findOne( array("user_id" => $commenter_user_id) )["user_name"];
+                $formatted_comment = array(
+                    "comment" => $comment["comment"],
+                    "posted_time" => $comment["posted_time"],
+                    "user_name" => $commenter_user_name
+                    );
+                array_push($comments, $formatted_comment);
+            }
 
             $response = array(
             'user_name' => $user_collection_find['user_name'],
             'title' => $stories_collection_find['title'],
             'posted_time' => $stories_collection_find['posted_time'],
             'description' => $stories_collection_find['description'],
-            'images' => $stories_collection_find['images']
+            'images' => $stories_collection_find['images'],
+            'likes_count' => $number_of_likes,
+            'comments' => $comments
             );
 
             echo json_encode( $response );
@@ -120,7 +131,7 @@ $app->get(
         } else {
             $response = array(
                 "status" => "error",
-                "message" => "The storyid you were trying to find seems to be missing!"
+                "message" => "The story_id you were trying to find seems to be missing!"
             );
             echo json_encode( $response );
             $app->response->headers->set('Content-Type', 'application/json');
@@ -128,6 +139,7 @@ $app->get(
         }
     }
 );
+
 /* END OF GET ROUTES */
 
 
@@ -288,7 +300,7 @@ $app->post(
             $usermetadata_collection->update(array( 'user_id' => $user_id  ), $new_data);
         
             $new_story = array(
-                'storyid' => $user_id . '_' . uniqid(),
+                'story_id' => $user_id . '_' . uniqid(),
                 'user_name' =>  $existing_user['user_name'],
                 'user_id' => $user_id,
                 'title' => $title,
