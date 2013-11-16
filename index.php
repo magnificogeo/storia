@@ -321,12 +321,29 @@ $app->post(
 );
 
 $app->post(
-    'api/story/like',
-    function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
+    '/api/story/like',
+    function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection, $likes_collection ) {
+
+        $slim_environment_vars = $app->environment;
+        $slim_input = json_decode( $slim_environment_vars['slim.input'] );
+
+        $user_id = $slim_input->user_id;
+        $story_id = $slim_input->story_id;
+
+        $existing_story_likes_entry = $likes_collection->findOne( array(
+            'story_id' => $story_id
+        ));
+
+        // Each like adds another entry to the likes collection table
+        $new_story_like = array(
+            'story_id' => $story_id,
+            'likes' => $user_id
+        );
+
+        $new_story_like_object = $likes_collection->insert($new_story_like);
 
     }
 );
-
 
 /* END OF POST ROUTES */
 
