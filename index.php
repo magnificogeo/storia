@@ -340,7 +340,42 @@ $app->post(
             'likes' => $user_id
         );
 
-        $new_story_like_object = $likes_collection->insert($new_story_like);
+        // Check if user already liked the story id
+        $user_like_exist = $likes_collection->findOne( array( 'user_id' => $user_id, 'story_id' => $story_id ));
+
+        if ( empty( $user_like_exist ) ) {
+            $new_story_like_object = $likes_collection->insert($new_story_like);
+            $response = array(
+                'status' => 'ok'
+            );
+
+            echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
+        } else {
+            $response = array(
+                'status' => 'the like was not recorded due to an error or user has already liked the entry!'
+            );
+
+            echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(400);
+        }
+
+
+    }
+);
+
+$app->post(
+    '/api/story/unlike',
+    function () use ( $app, $likes_collection ) {
+
+        $slim_environment_vars = $app->environment;
+        $slim_input = json_decode( $slim_environment_vars['slim.input'] );
+
+        $user_id = $slim_input->user_id;
+        $story_id = $slim_input->story_id;
+
+
 
     }
 );
