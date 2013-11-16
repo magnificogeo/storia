@@ -396,6 +396,49 @@ $app->post(
     }
 );
 
+$app->post(
+    '/api/story/comment',
+    function() use ( $app, $comments_collection ) {
+
+        $slim_environment_vars = $app->environment;
+        $slim_input = json_decode( $slim_environment_vars['slim.input'] );
+
+        $user_id = $slim_input->user_id;
+        $story_id = $slim_input->story_id;
+        $comment = $slim_input->comment;
+
+        // Check if user has already submitted the same exact comment
+        $user_comment_exist = $comments_collection->findOne( array( 'comment' => $comment, 'story_id' => $story_id, 'user_id' => $user_id ) ); 
+
+        $new_user_comment_data = array(
+            'story_id' => $story_id,
+            'user_id' => $user_id,
+            'comment' => $comment
+            );
+
+        if ( empty( $user_comment_exist ) ) {
+
+            $comments_collection->insert($new_user_comment_data);
+            $response = array(
+                'status' => 'ok'
+            );
+
+            echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
+
+        } else {
+            $response = array(
+                'status' => 'the comment was not recorded due to an error or a duplicate entry from the same user exists!'
+            );
+
+            echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(400);
+        }
+
+    }
+);
+
 /* END OF POST ROUTES */
 
 // Run the slim application
