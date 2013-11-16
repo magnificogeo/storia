@@ -36,3 +36,30 @@
   "password": "ianloketestpassword",
   "email": "ianloke@ianloke.com"
 }
+
+// comments collection
+{
+  "_id": ObjectId("5287d494fe937312051bf2d8"),
+  "storyid": "gmyc_5281b5a8995ea_5281b91805109",
+  "comments": [
+    {
+      "user_id": "asdlkajsdlkajskdad",
+      "comment": "asdasdasdasdasdasd"
+    },
+    {
+      "user_id": "asdasdasdasdasdasda",
+      "comment": "asdkjasdkjasdlkajsdl"
+    }
+  ]
+}
+
+// likes collection
+{
+  "_id": ObjectId("5287d494fe937312051bf2d8"),
+  "storyid": "gmyc_5281b5a8995ea_5281b91805109",
+  "likes": [
+    "asdasdasdsa",
+    "asdasdasdasdsad",
+    "asdasdasdasdasdasd"
+  ]
+}
