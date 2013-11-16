@@ -320,6 +320,14 @@ $app->post(
     }
 );
 
+$app->post(
+    'api/story/like',
+    function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
+
+    }
+);
+
+
 /* END OF POST ROUTES */
 
 // Run the slim application

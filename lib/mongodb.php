@@ -10,6 +10,8 @@ $db = $m->juubs;
 $user_collection = $db->user;
 $stories_collection = $db->stories;
 $usermetadata_collection = $db->usermetadata;
+$likes_collection = $db->likes;
+$comments_collection = $db->comments;
 
 $stories_collection->ensureIndex(array('posted_time' => -1));
 
