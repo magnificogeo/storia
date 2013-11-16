@@ -330,21 +330,17 @@ $app->post(
         $user_id = $slim_input->user_id;
         $story_id = $slim_input->story_id;
 
-        $existing_story_likes_entry = $likes_collection->findOne( array(
-            'story_id' => $story_id
-        ));
-
         // Each like adds another entry to the likes collection table
-        $new_story_like = array(
+        $new_story_like_data = array(
             'story_id' => $story_id,
             'likes' => $user_id
         );
 
         // Check if user already liked the story id
-        $user_like_exist = $likes_collection->findOne( array( 'user_id' => $user_id, 'story_id' => $story_id ));
+        $user_like_exist = $likes_collection->findOne( array( 'likes' => $user_id, 'story_id' => $story_id ));
 
         if ( empty( $user_like_exist ) ) {
-            $new_story_like_object = $likes_collection->insert($new_story_like);
+            $new_story_like_object = $likes_collection->insert($new_story_like_data);
             $response = array(
                 'status' => 'ok'
             );
@@ -375,7 +371,27 @@ $app->post(
         $user_id = $slim_input->user_id;
         $story_id = $slim_input->story_id;
 
+        // Check if user already liked the story id
+        $user_like_exist = $likes_collection->findOne( array( 'likes' => $user_id, 'story_id' => $story_id ));
 
+        if ( !empty( $user_like_exist ) ) {
+
+            $likes_collection->remove( array('likes' => $user_id, 'story_id' => $story_id), array('justOne' => true ));
+            $response = array(
+                'status' => 'ok'
+            );
+
+            echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
+        } else {
+            $response = array(
+                'status' => 'the unlike was not recorded due to an error or user has already unliked the entry!'
+            );
+
+            echo json_encode( $response );
+            $app->response->headers->set('Content-Type', 'application/json');
+            $app->response->setStatus(400);
+        }
 
     }
 );
