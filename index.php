@@ -110,7 +110,7 @@ $app->get(
                 $commenter_user_name = $usermetadata_collection->findOne( array("user_id" => $commenter_user_id) )["user_name"];
                 $formatted_comment = array(
                     "comment" => $comment["comment"],
-                    "posted_time" => $comment["posted_time"],
+                    "posted_time" => $comment["id"]->getTimestamp(),
                     "user_name" => $commenter_user_name
                     );
                 array_push($comments, $formatted_comment);
