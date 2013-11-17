@@ -313,6 +313,8 @@ $app->post(
         $description = $slim_input->description;
         $images = $slim_input->images;
 
+        var_dump( $images );
+
         // Check for existing user
         $user_metadata = $usermetadata_collection->findOne( array(
             'token' => $token,
