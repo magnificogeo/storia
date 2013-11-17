@@ -134,7 +134,7 @@ $app->get(
             $comments = array();
             $comments_retrieved = $comments_collection->find( array( 'story_id' => $story_id ) );
             foreach ($comments_retrieved as $comment) {
-                $commenter = $usermetadata_collection->findOne( array("user_id" => $comment["user_id"]) )["user_name"];
+                $commenter = $usermetadata_collection->findOne( array("user_id" => $comment["user_id"]) );
                 $commenter_user_name = $commenter["user_name"];
                 $formatted_comment = array(
                     "comment" => $comment["comment"],
