@@ -56,3 +56,7 @@ table {
 ul {
 	list-style:none;
 }
+
+.free-wall {
+    margin: 15px;
+}
