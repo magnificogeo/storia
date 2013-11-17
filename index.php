@@ -75,7 +75,11 @@ $app->get(
             ->skip($start)
             ->limit(10);
 
+        $counter = 0;
         foreach ($stories_found as $story){
+            $counter += 1;
+            if (count($story["images"]) == 0)
+                continue;
             $user_name = get_user_name( $story["user_id"], $usermetadata_collection );
             $number_of_likes = get_number_of_likes($story["story_id"], $likes_collection);
             # Find comments for the story
@@ -106,7 +110,7 @@ $app->get(
             array_push($stories, $response);
         }
 
-        $updated_start = $start + count($stories);
+        $updated_start = $start + $counter;
     
         $response = array(
             "status" => "ok",
