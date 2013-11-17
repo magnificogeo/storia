@@ -12,24 +12,32 @@
 </head>
 
 <body>
-	<ul id="container">
-		<li class="item"></li>
-		<li class="item"></li>
-		<li class="item"></li>
-		<li>
-			<ul id="sub-container">
-				<li class="item"></li>
-				<li class="item"></li>
-				<li class="item"></li>
-				<li class="item"></li>
-			</ul>
-		</li>
-	</ul>
+	<div id="freewall" class="free-wall"></div>
 
 	<script>
 		$(function() {
-			var wall = new freewall('#container, #sub-container');
-			wall.fitWidth();
+			var temp = "<div class='cell' style='width:{width}px; height: {height}px; background-image: url(i/photo/{index}.jpg)'></div>";
+                        var w = 1, h = 1, html = '', limitItem = 49;
+                        for (var i = 0; i < limitItem; ++i) {
+                                h = 1 + 3 * Math.random() << 0;
+                                w = 1 + 3 * Math.random() << 0;
+                                html += temp.replace(/\{height\}/g, h*150).replace(/\{width\}/g, w*150).replace("{index}", i + 1);
+                        }
+                        $("#freewall").html(html);
+                        
+                        var ewall = new freewall("#freewall");
+                        ewall.reset({
+                                selector: '.cell',
+                                animate: true,
+                                cellW: 150,
+                                cellH: 150,
+                                onResize: function() {
+                                        ewall.fitWidth();
+                                }
+                        });
+                        ewall.fitWidth();
+                        // for scroll bar appear;
+                        $(window).trigger("resize");
 		});
 	</script>
 </body>

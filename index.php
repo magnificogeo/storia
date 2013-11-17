@@ -277,7 +277,7 @@ $app->post(
     function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
 
         $slim_environment_vars = $app->environment;
-        $slim_input = json_decode( $slim_environment_vars['slim.input'], FALSE );
+        $slim_input = json_decode( $slim_environment_vars['slim.input']);
 
         $token = $slim_input->token;
         $title = $slim_input->title;
