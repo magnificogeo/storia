@@ -1,5 +1,5 @@
 <?php
-// hello there
+//  hello there this is a photowall
 ?>
 
 <html>
@@ -7,46 +7,29 @@
 <head>
 	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script src="/storia/server/templates/js/freewall.js"></script>
+	<link rel="stylesheet" type="text/css" href="/storia/server/templates/css/style.css">
 </head>
-<script type="text/javascript">
-	jQuery(document).ready( function() {
-
-		jQuery('#login-button').on( 'click', function() {
-
-			var user_name = jQuery('#user-name').val();
-			var password = jQuery('#user-password').val();
-
-			var request_body = { "user_name": user_name, "password": password };
-
-			jQuery.ajax({
-				url:"http://localhost/storia/server/index.php/api/login",
-				type:"POST",
-				data: request_body,
-				dataType: "json",
-				success: function( data ) {
-
-					console.log( data );
-
-				}
-			});
-
-		});
-
-	});
-</script>
-
-
 
 <body>
+	<ul id="container">
+		<li class="item"></li>
+		<li class="item"></li>
+		<li class="item"></li>
+		<li>
+			<ul id="sub-container">
+				<li class="item"></li>
+				<li class="item"></li>
+				<li class="item"></li>
+				<li class="item"></li>
+			</ul>
+		</li>
+	</ul>
 
-	<input type="text" id="user-name">
-
-		<br />
-
-	<input type="text" id="user-password">
-
-	<input type="button" id="login-button" value="login">
-
+	<script>
+		$(function() {
+			var wall = new freewall('#container, #sub-container');
+			wall.fitWidth();
+		});
+	</script>
 </body>
-
-</html>
