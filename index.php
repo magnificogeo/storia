@@ -65,7 +65,7 @@ $app->get(
 
 $app->get(
     '/api/feeds/',
-    function() use ( $app, $stories_collection ) {
+    function() use ( $app, $user_collection, $usermetadata_collection, $stories_collection, $likes_collection, $comments_collection ) {
         $stories = array();
         $req = $app->request();
         $start = $req->get('start');
@@ -76,7 +76,34 @@ $app->get(
             ->limit(10);
 
         foreach ($stories_found as $story){
-            array_push($stories, $story);
+            $user_name = get_user_name( $story["user_id"], $usermetadata_collection );
+            $number_of_likes = get_number_of_likes($story["story_id"], $likes_collection);
+            # Find comments for the story
+            $comments = array();
+            $comments_retrieved = $comments_collection->find( array( 'story_id' => $story["story_id"] ) );
+            foreach ($comments_retrieved as $comment) {
+                // $commenter_user_name = $usermetadata_collection->findOne( array("user_id" => $comment["user_id"]) )["user_name"];
+                $commenter_user_name = get_user_name($comment["user_id"], $usermetadata_collection);
+                $formatted_comment = array(
+                    "comment" => $comment["comment"],
+                    "posted_time" => $comment["posted_time"],
+                    "user_name" => $commenter_user_name
+                    );
+                array_push($comments, $formatted_comment);
+            }
+
+            $response = array(
+                'user_name' => $user_name,
+                'title' => $story['title'],
+                'posted_time' => $story['posted_time'],
+                'description' => $story['description'],
+                'images' => $story['images'],
+                'likes_count' => $number_of_likes,
+                'comments' => $comments
+            );
+
+
+            array_push($stories, $response);
         }
 
         $updated_start = $start + count($stories);
@@ -97,33 +124,34 @@ $app->get(
     '/api/story/:story_id/',
     function($story_id) use ( $app, $user_collection, $usermetadata_collection, $stories_collection, $likes_collection, $comments_collection ) {
 
-        $stories_collection_find = $stories_collection->findOne( array( 'story_id' => $story_id ) );
-        $user_collection_find = $user_collection->findOne(array( 'user_id' => $stories_collection_find['user_id'] ) );
-
-        if ( $stories_collection_find ) {
+        $story = $stories_collection->findOne( array( "story_id" => $story_id ) );
+        
+        if ( $story ) {
+            $user_name = get_user_name( $story["user_id"], $usermetadata_collection );
             # Find number of lights in a story
-            $number_of_likes=$likes_collection->count(array("story_id" => $story_id));
+            $number_of_likes = get_number_of_likes( $story_id, $likes_collection );
             # Find comments for the story
             $comments = array();
             $comments_retrieved = $comments_collection->find( array( 'story_id' => $story_id ) );
             foreach ($comments_retrieved as $comment) {
-                $commenter_user_name = $usermetadata_collection->findOne( array("user_id" => $commenter_user_id) )["user_name"];
+                $commenter = $usermetadata_collection->findOne( array("user_id" => $comment["user_id"]) );
+                $commenter_user_name = $commenter["user_name"];
                 $formatted_comment = array(
                     "comment" => $comment["comment"],
-                    "posted_time" => $comment["id"]->getTimestamp(),
+                    "posted_time" => $comment["posted_time"],
                     "user_name" => $commenter_user_name
                     );
                 array_push($comments, $formatted_comment);
             }
 
             $response = array(
-            'user_name' => $user_collection_find['user_name'],
-            'title' => $stories_collection_find['title'],
-            'posted_time' => $stories_collection_find['posted_time'],
-            'description' => $stories_collection_find['description'],
-            'images' => $stories_collection_find['images'],
-            'likes_count' => $number_of_likes,
-            'comments' => $comments
+                'user_name' => $user_name,
+                'title' => $story['title'],
+                'posted_time' => $story['posted_time'],
+                'description' => $story['description'],
+                'images' => $story['images'],
+                'likes_count' => $number_of_likes,
+                'comments' => $comments
             );
 
             echo json_encode( $response );
@@ -281,7 +309,7 @@ $app->post(
 
         $token = $slim_input->token;
         $title = $slim_input->title;
-        $posted_time = $slim_input->posted_time;
+        $posted_time = time();
         $description = $slim_input->description;
         $images = $slim_input->images;
 
@@ -301,7 +329,6 @@ $app->post(
         
             $new_story = array(
                 'story_id' => $user_id . '_' . uniqid(),
-                'user_name' =>  $user_metadata['user_name'],
                 'user_id' => $user_id,
                 'title' => $title,
                 'posted_time' => (int) $posted_time,
@@ -461,7 +488,8 @@ $app->post(
         $new_user_comment_data = array(
             'story_id' => $story_id,
             'user_id' => $user_id,
-            'comment' => $comment
+            'comment' => $comment,
+            'posted_time' => time()
             );
 
         if ( empty( $user_comment_exist ) ) {
@@ -488,6 +516,15 @@ $app->post(
 );
 
 /* END OF POST ROUTES */
+
+function get_user_name($user_id, $usermetadata_collection) {
+    $user_data = $usermetadata_collection->findOne(array( "user_id" => $user_id ) );
+    return $user_data["user_name"];
+}
+
+function get_number_of_likes($story_id, $likes_collection){
+    return $likes_collection->count(array("story_id" => $story_id));
+}
 
 // Run the slim application
 $app->run();
