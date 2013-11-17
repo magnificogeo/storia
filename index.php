@@ -518,7 +518,7 @@ $app->post(
 /* END OF POST ROUTES */
 
 function get_user_name($user_id, $usermetadata_collection) {
-    $user_data = $usermetadata_collection->findOne(array( "user_id" => $user_id ) )
+    $user_data = $usermetadata_collection->findOne(array( "user_id" => $user_id ) );
     return $user_data["user_name"];
 }
 
