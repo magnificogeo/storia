@@ -304,24 +304,24 @@ $app->post(
     function () use ( $app, $user_collection, $stories_collection, $usermetadata_collection ) {
 
         $slim_environment_vars = $app->environment;
-        $slim_input = json_decode( $slim_environment_vars['slim.input'] );
+        $slim_input = json_decode( $slim_environment_vars['slim.input'], FALSE );
 
-        $user_id = $slim_input->user_id;
+        $token = $slim_input->token;
         $title = $slim_input->title;
         $posted_time = time();
         $description = $slim_input->description;
         $images = $slim_input->images;
 
         // Check for existing user
-        $existing_user = $user_collection->findOne( array(
-            'user_id' => $user_id,
+        $user_metadata = $usermetadata_collection->findOne( array(
+            'token' => $token,
             ) );
+        
+        $user_id = $user_metadata['user_id'];
 
-        if ( !empty( $existing_user )) {
+        if ( !empty( $user_metadata )) {
 
-            $user_meta_data = $usermetadata_collection->findOne( array( 'user_id' => $user_id ));
-
-            $story_count = $user_meta_data['story_count'];
+            $story_count = $user_metadata['story_count'];
            
             $new_data = array('$set' => array('story_count' => $story_count + 1 ));
             $usermetadata_collection->update(array( 'user_id' => $user_id  ), $new_data);
@@ -365,8 +365,20 @@ $app->post(
         $slim_environment_vars = $app->environment;
         $slim_input = json_decode( $slim_environment_vars['slim.input'] );
 
-        $user_id = $slim_input->user_id;
+        $token = $slim_input->token;
         $story_id = $slim_input->story_id;
+
+        $user_metadata = $usermetadata_collection->findOne( array('token' => $token ) );
+        if ( empty($user_metadata) ) {
+            $response = array(
+                'status' => 'the user token cannot be authenticated at this time.'
+                );
+            $app->response->headers->set('Content-Type', 'application/json' );
+            $app->response->setStatus(400);
+            return;
+        }
+        
+        $user_id = $user_metadata['user_id'];
 
         // Each like adds another entry to the likes collection table
         $new_story_like_data = array(
@@ -401,13 +413,25 @@ $app->post(
 
 $app->post(
     '/api/story/unlike',
-    function () use ( $app, $likes_collection ) {
+    function () use ( $app, $likes_collection, $usermetadata_collection ) {
 
         $slim_environment_vars = $app->environment;
         $slim_input = json_decode( $slim_environment_vars['slim.input'] );
 
-        $user_id = $slim_input->user_id;
+        $token = $slim_input->token;
         $story_id = $slim_input->story_id;
+
+        $user_metadata = $usermetadata_collection->findOne( array('token' => $token ) );
+        if ( empty($user_metadata) ) {
+            $response = array(
+                'status' => 'the user token cannot be authenticated at this time.'
+                );
+            $app->response->headers->set('Content-Type', 'application/json' );
+            $app->response->setStatus(400);
+            return;
+        }
+        
+        $user_id = $user_metadata['user_id'];
 
         // Check if user already liked the story id
         $user_like_exist = $likes_collection->findOne( array( 'likes' => $user_id, 'story_id' => $story_id ));
@@ -436,14 +460,26 @@ $app->post(
 
 $app->post(
     '/api/story/comment',
-    function() use ( $app, $comments_collection ) {
+    function() use ( $app, $comments_collection, $usermetadata_collection ) {
 
         $slim_environment_vars = $app->environment;
         $slim_input = json_decode( $slim_environment_vars['slim.input'] );
 
-        $user_id = $slim_input->user_id;
+        $token = $slim_input->token;
         $story_id = $slim_input->story_id;
         $comment = $slim_input->comment;
+
+        $user_metadata = $usermetadata_collection->findOne( array('token' => $token ) );
+        if ( empty($user_metadata) ) {
+            $response = array(
+                'status' => 'the user token cannot be authenticated at this time.'
+                );
+            $app->response->headers->set('Content-Type', 'application/json' );
+            $app->response->setStatus(400);
+            return;
+        }
+        
+        $user_id = $user_metadata['user_id'];
 
         // Check if user has already submitted the same exact comment
         $user_comment_exist = $comments_collection->findOne( array( 'comment' => $comment, 'story_id' => $story_id, 'user_id' => $user_id ) ); 
