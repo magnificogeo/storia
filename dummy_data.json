@@ -63,3 +63,43 @@
     "asdasdasdasdasdasd"
   ]
 }
+
+// get a story
+
+{http://localhost/storia/server/index.php/api/story/gmyc_5287f88029104_5287f8a11338b''}
+
+
+//post a comment
+
+{
+"user_id":"gmyc_5287f88029104",
+"story_id": "gmyc_5287f88029104_5287f8a11338b",
+"comment": "yolo"
+}
+
+//post a like
+{
+  "user_id":"gmyc_5287f88029104",
+  "story_id": "gmyc_5287f88029104_528808da62902"
+
+}
+
+{
+  "title": "Ports of San Francisco at night",
+  "user_id": "gmyc_5287f88029104",
+  "description":"I'm a person that enjoys the night scenery.. the city lights and the sky line. It gives me a sort of calm unlike any other.",
+  "images": [ 
+    {
+      "caption": "Beautiful Oakland Bay Bridge after retrofitting with LED lights",
+      "image_url": "https://s3.amazonaws.com/Storia/set15img1.jpg"
+    },    
+    {
+      "caption": "A small portion of the skyline. I swear its even better than this.",
+      "image_url": "https://s3.amazonaws.com/Storia/set15img2.jpg"
+    },
+    {
+      "caption": "The clock tower at the end of market street! Who knows it could be this nice!",
+      "image_url": "https://s3.amazonaws.com/Storia/set15img3.jpg"
+    }
+  ]
+}
