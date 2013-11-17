@@ -134,7 +134,8 @@ $app->get(
             $comments = array();
             $comments_retrieved = $comments_collection->find( array( 'story_id' => $story_id ) );
             foreach ($comments_retrieved as $comment) {
-                $commenter_user_name = $usermetadata_collection->findOne( array("user_id" => $comment["user_id"]) )["user_name"];
+                $commenter = $usermetadata_collection->findOne( array("user_id" => $comment["user_id"]) )["user_name"];
+                $commenter_user_name = $commenter["user_name"];
                 $formatted_comment = array(
                     "comment" => $comment["comment"],
                     "posted_time" => $comment["posted_time"],
@@ -517,7 +518,8 @@ $app->post(
 /* END OF POST ROUTES */
 
 function get_user_name($user_id, $usermetadata_collection) {
-    return $usermetadata_collection->findOne(array( "user_id" => $user_id ) )["user_name"];
+    $user_data = $usermetadata_collection->findOne(array( "user_id" => $user_id ) )
+    return $user_data["user_name"];
 }
 
 function get_number_of_likes($story_id, $likes_collection){
