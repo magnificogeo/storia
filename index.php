@@ -236,7 +236,7 @@ $app->post(
 
             $generated_token = generate_token();
 
-            $new_data = array('$set' => array('token' => $generated_token));
+            $new_data = array('$push' => array('token' => $generated_token));
             $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
             $user_name = $login_query["user_name"];
             $user_id = $login_query["user_id"];
@@ -309,7 +309,7 @@ $app->post(
             $meta_data = array(
                 "user_name" => $user_name,
                 "user_id" => $user_id,
-                "token" => $token,
+                "token" => array ( $token ),
                 "story_count" => 0
             );
 
@@ -410,7 +410,7 @@ $app->post(
         $slim_environment_vars = $app->environment;
         $slim_input = json_decode( $slim_environment_vars['slim.input'] );
 
-        $token = $slim_input->tokengenerator;
+        $token = $slim_input->token;
         $story_id = $slim_input->story_id;
 
         $user_metadata = $usermetadata_collection->findOne( array('token' => $token ) );
