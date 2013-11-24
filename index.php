@@ -69,6 +69,19 @@ $app->get(
         $stories = array();
         $req = $app->request();
         $start = $req->get('start');
+        $token = $req->get('token');
+
+        $user_metadata = $usermetadata_collection->findOne( array('token' => $token ) );
+        if ( empty($user_metadata) ) {
+            $response = array(
+                'status' => 'the user token cannot be authenticated at this time.'
+                );
+            $app->response->headers->set('Content-Type', 'application/json' );
+            $app->response->setStatus(400);
+            return;
+        }
+        
+        $user_id = $user_metadata['user_id'];
 
         $stories_found = $stories_collection->find( array())
             ->sort(array('posted_time' => -1))
@@ -82,6 +95,7 @@ $app->get(
                 continue;
             $user_name = get_user_name( $story["user_id"], $usermetadata_collection );
             $number_of_likes = get_number_of_likes($story["story_id"], $likes_collection);
+            $user_liked_story = user_liked_story($user_id, $likes_collection);
             # Find comments for the story
             $comments = array();
             $comments_retrieved = $comments_collection->find( array( 'story_id' => $story["story_id"] ) );
@@ -103,7 +117,8 @@ $app->get(
                 'description' => $story['description'],
                 'images' => $story['images'],
                 'likes_count' => $number_of_likes,
-                'comments' => $comments
+                'comments' => $comments,
+                'user_liked_story' => $user_liked_story
             );
 
 
@@ -127,9 +142,23 @@ $app->get(
 $app->get(
     '/api/story/:story_id/',
     function($story_id) use ( $app, $user_collection, $usermetadata_collection, $stories_collection, $likes_collection, $comments_collection ) {
-
-        $story = $stories_collection->findOne( array( "story_id" => $story_id ) );
+        $req = $app->request();
+        $token = $req->get('token');
+        $user_metadata = $usermetadata_collection->findOne( array('token' => $token ) );
+        if ( empty($user_metadata) ) {
+            $response = array(
+                'status' => 'the user token cannot be authenticated at this time.'
+                );
+            $app->response->headers->set('Content-Type', 'application/json' );
+            $app->response->setStatus(400);
+            return;
+        }
         
+        $user_id = $user_metadata['user_id'];
+        $user_liked_story = user_liked_story($user_id, $likes_collection);   
+        
+        $story = $stories_collection->findOne( array( "story_id" => $story_id ) );
+
         if ( $story ) {
             $user_name = get_user_name( $story["user_id"], $usermetadata_collection );
             # Find number of lights in a story
@@ -155,7 +184,8 @@ $app->get(
                 'description' => $story['description'],
                 'images' => $story['images'],
                 'likes_count' => $number_of_likes,
-                'comments' => $comments
+                'comments' => $comments,
+                "user_liked_story" => $user_liked_story
             );
 
             echo json_encode( $response );
@@ -236,7 +266,6 @@ $app->post(
 
         $slim_environment_vars = $app->environment;
         $slim_input = json_decode( $slim_environment_vars['slim.input'] );
-
         $user_name = $slim_input->user_name;
 
         // Check for existing user
@@ -244,12 +273,16 @@ $app->post(
             'user_name' => $user_name
             ) );
 
-        if ( !empty($existing_user)) {
+        
+
+        if ($existing_user) {
 
             $response = array(
                 "status" => "error",
                 "message" => "Username already exist",
             );
+
+            echo json_encode($response);
 
             $app->response->setStatus(400);
 
@@ -528,6 +561,15 @@ function get_user_name($user_id, $usermetadata_collection) {
 
 function get_number_of_likes($story_id, $likes_collection){
     return $likes_collection->count(array("story_id" => $story_id));
+}
+
+function user_liked_story($user_id, $likes_collection){
+    if ($likes_collection->findOne(array( "likes" => $user_id ) )){
+        return 1;
+    }
+    else{   
+        return 0;
+    }
 }
 
 // Run the slim application
