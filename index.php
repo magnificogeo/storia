@@ -27,39 +27,47 @@ $app->get(
 );
 
 $app->get(
-    '/api/profile/:token',
-    function($token) use ( $app, $usermetadata_collection, $stories_collection ) {
-        $user_meta_data = $usermetadata_collection->findOne( array(
-            'token' => $token
-            ) );
+    '/api/profile',
+    function() use ( $app, $usermetadata_collection, $stories_collection, $user_collection, $likes_collection, $comments_collection ) {
+        
+        $req = $app->request();
+        $token = $req->get('token');
 
-        if (!$user_meta_data){
+        $user_metadata = $usermetadata_collection->findOne( array('token' => $token ) );
+
+        if ( empty($user_metadata) ) {
             $response = array(
-                "status" => "error",
-                "message" => "User data not found"
-            );
+                'status' => 'the user token cannot be authenticated at this time.'
+                );
+            $app->response->headers->set('Content-Type', 'application/json' );
             $app->response->setStatus(400);
-
-        } else {
-            $stories = array();
-            $user_id = $user_meta_data["user_id"];
-
-            $user_stories = $stories_collection->find( array(
-                "user_id" => $user_id
-            ) );
-
-            foreach ($user_stories as $story) {
-                array_push( $stories, $story );
-            }
-
-            $response = array(
-                "status" => "ok",
-                "stories" => $stories
-            );
+            return;
         }
 
+        $user_id = $user_metadata['user_id'];
+        $user_name = $user_metadata['user_name'];
+        $story_count = $user_metadata['story_count'];
+        
+        $user_account_data = $user_collection->findOne( array( 'user_id' => $user_id ));
+
+        $user_email = $user_account_data['email'];
+        
+        $number_of_stories_liked = $likes_collection->count(array('likes' => $user_id ));
+        $number_of_stories_commented_on = $comments_collection->count(array('user_id' => $user_id ));
+
+        $response = array(
+            'user_name' => $user_name,
+            'user_id' => $user_id,
+            'user_email' => $user_email,
+            'number_of_stories_posted' => $story_count,
+            'number_of_stories_liked' => $number_of_stories_liked,
+            'number_of_stories_commented_on' => $number_of_stories_commented_on
+        );
+
         echo json_encode( $response );
-        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->headers->set('Content-Type', 'application/json' );
+        $app->response->setStatus(200);
+
     }
 );
 
@@ -201,7 +209,6 @@ $app->get(
         }
     }
 );
-
 /* END OF GET ROUTES */
 
 
@@ -403,7 +410,7 @@ $app->post(
         $slim_environment_vars = $app->environment;
         $slim_input = json_decode( $slim_environment_vars['slim.input'] );
 
-        $token = $slim_input->token;
+        $token = $slim_input->tokengenerator;
         $story_id = $slim_input->story_id;
 
         $user_metadata = $usermetadata_collection->findOne( array('token' => $token ) );
