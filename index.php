@@ -236,7 +236,7 @@ $app->post(
 
             $generated_token = generate_token();
 
-            $new_data = array('$push' => array('token' => $generated_token));
+            $new_data = array('$addToSet' => array('token' => $generated_token));
             $usermetadata_collection->update(array( 'user_name' => $user_name  ), $new_data);
             $user_name = $login_query["user_name"];
             $user_id = $login_query["user_id"];
