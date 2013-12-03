@@ -120,6 +120,7 @@ $app->get(
 
             $response = array(
                 'user_name' => $user_name,
+                'story_id' => $story["story_id"],
                 'title' => $story['title'],
                 'posted_time' => $story['posted_time'],
                 'description' => $story['description'],
